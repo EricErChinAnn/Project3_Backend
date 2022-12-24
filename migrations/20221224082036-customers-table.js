@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable("employees",{
+  return db.createTable("customers",{
     id:{
       type: 'int',
       unsigned: true,
@@ -26,23 +26,53 @@ exports.up = function(db) {
     username : {
       type: 'string',
       notNull: true,
-      length: "50"
+      length: "75"
     },
     email : {
       type: 'string',
       notNull: true,
-      length: "320"
+      length: "155"
     },
     password : {
       type: 'string',
       notNull: true,
-      length: "50"
+      length: "155"
+    },
+    dob:{
+      type:"date",
+      notNull:true,
+    },
+    contact:{
+      type:"smallint",
+      notNull: true,
+      unsigned:true
+    },
+    postal_code:{
+      type: 'string',
+      notNull: true,
+      length: "25"
+    },
+    address_line_1:{
+      type: 'string',
+      notNull: true,
+      length: "155"
+    },
+    address_line_2:{
+      type: 'string',
+      notNull: false,
+      length: "155"
+    },
+    country:{
+      type: 'string',
+      notNull: true,
+      length: "70"
     }
+
   });
 };
 
 exports.down = function(db) {
-  return db.dropTable("employees");
+  return db.dropTable("customers");
 };
 
 exports._meta = {

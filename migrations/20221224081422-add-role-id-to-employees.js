@@ -15,26 +15,18 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable("roles",{
-    id:{
-      type: 'int',
-      unsigned: true,
-      notNull: true,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    role : {
-      type: 'string',
-      notNull: true,
-      length: "40"
-    }
-  });
+  return db.addColumn('employees', 'role_id', {
+    type: 'int',
+    unsigned:true,
+    notNull : true,
+})
 };
 
 exports.down = function(db) {
-  return db.dropTable("roles");
+  return db.removeColumn('employees');
 };
 
 exports._meta = {
   "version": 1
 };
+

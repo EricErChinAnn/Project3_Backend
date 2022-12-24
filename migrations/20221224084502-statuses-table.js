@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable("employees",{
+  return db.createTable("statuses",{
     id:{
       type: 'int',
       unsigned: true,
@@ -23,26 +23,17 @@ exports.up = function(db) {
       primaryKey: true,
       autoIncrement: true
     },
-    username : {
-      type: 'string',
-      notNull: true,
-      length: "50"
-    },
-    email : {
-      type: 'string',
-      notNull: true,
-      length: "320"
-    },
-    password : {
-      type: 'string',
-      notNull: true,
-      length: "50"
+    status:{
+      type:"string",
+      length: "25",
+      notNull:true
     }
   });
 };
 
 exports.down = function(db) {
-  return db.dropTable("employees");
+  return db,dropTable("statuses");
+  return db.dropTable("orders");
 };
 
 exports._meta = {
