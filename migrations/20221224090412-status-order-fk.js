@@ -15,24 +15,19 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable("statuses",{
-    id:{
-      type: 'int',
-      unsigned: true,
-      notNull: true,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    status:{
-      type:"string",
-      length: "25",
-      notNull:true
-    }
-  });
+  return db.addForeignKey('statuses', 'orders', 'status_order_fk',
+       {
+        "order_id":"id"
+      },
+       {
+            onDelete: 'CASCADE',
+            onUpdate: 'RESTRICT'
+       })
 };
 
 exports.down = function(db) {
-  return db,dropTable("statuses");
+  db.removeForeignKey("statuses", 'status_order_fk');
+
 };
 
 exports._meta = {

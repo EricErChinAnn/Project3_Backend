@@ -23,7 +23,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
-  return db.removeColumn('employees');
+  return db.removeColumn('employees', 'role_id');
 };
 
 exports._meta = {

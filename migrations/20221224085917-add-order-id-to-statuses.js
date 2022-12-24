@@ -15,24 +15,15 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable("statuses",{
-    id:{
-      type: 'int',
-      unsigned: true,
-      notNull: true,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    status:{
-      type:"string",
-      length: "25",
-      notNull:true
-    }
-  });
+  return db.addColumn('statuses', 'order_id', {
+    type: 'int',
+    unsigned:true,
+    notNull : true,
+})
 };
 
 exports.down = function(db) {
-  return db,dropTable("statuses");
+  return db.removeColumn('statuses', 'order_id');
 };
 
 exports._meta = {
