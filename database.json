@@ -1,0 +1,8 @@
+{
+    "dev": {
+      "driver": "mysql",
+      "user": "admin",
+      "password":"asd123",
+      "database":"tabletopgames"
+    }
+  }

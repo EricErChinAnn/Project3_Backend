@@ -3,14 +3,25 @@ To start mysql, in the terminal, type in `mysql -u root`
 # Create a new database user
 In the MySQL CLI:
 ```
-CREATE USER 'ahkow'@'localhost' IDENTIFIED BY 'rotiprata123';
+CREATE USER 'admin'@'%' IDENTIFIED WITH mysql_native_password BY 'asd123';
 ```
 
 ```
-GRANT ALL PRIVILEGES on sakila.* TO 'ahkow'@'localhost' WITH GRANT OPTION;
+grant all privileges on *.* to 'admin'@'%';
 ```
-**Note:** Replace *sakila* with the name of the database you want the user to have access to
- 
- ```
+
+```
 FLUSH PRIVILEGES;
 ```
+
+
+# Dependencies
+* db-migrate
+* db-migrate-mysql
+* mysql
+* express
+* hbs
+* wax-on (inheritance)
+* .env
+* nodemon
+* 
