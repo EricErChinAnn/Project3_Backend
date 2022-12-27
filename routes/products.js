@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { 
+    checkIfAuthenticatedEmployee,
+    checkIfAuthenticatedManagement
+} = require('../middlewares');
 
 const {Product} = require('../models')
 const { bootstrapField } = require("../forms/index")
@@ -30,7 +34,7 @@ router.get('/', async (req,res)=>{
 
 // Add Product
 
-router.get('/create', async (req, res) => {
+router.get('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
     const productForm = await FullProductForm();
 
@@ -39,7 +43,7 @@ router.get('/create', async (req, res) => {
     })
 })
 
-router.post('/create', async(req,res)=>{
+router.post('/create',checkIfAuthenticatedEmployee, async(req,res)=>{
 
     const productForm = await FullProductForm();
 
@@ -107,7 +111,7 @@ router.post('/create', async(req,res)=>{
 
 //Edit Product
 
-router.get('/update/:productId', async (req, res) => {
+router.get('/update/:productId', checkIfAuthenticatedEmployee, async (req, res) => {
     
     const productEdit = await Product.where({
         'id': req.params.productId
@@ -147,7 +151,7 @@ router.get('/update/:productId', async (req, res) => {
 
 })
 
-router.post("/update/:productId", async (req, res) => {
+router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res) => {
 
     const productEdit = await Product.where({
         'id': req.params.productId
@@ -210,7 +214,7 @@ router.post("/update/:productId", async (req, res) => {
 
 //Delete Product 
 
-router.get('/delete/:product_id', async(req,res)=>{
+router.get('/delete/:product_id',checkIfAuthenticatedManagement, async(req,res)=>{
     // fetch the product that we want to delete
     const product = await Product.where({
         'id': req.params.product_id
@@ -223,7 +227,7 @@ router.get('/delete/:product_id', async(req,res)=>{
     })
 
 });
-router.post('/delete/:product_id', async(req,res)=>{
+router.post('/delete/:product_id', checkIfAuthenticatedManagement, async(req,res)=>{
     // fetch the product that we want to delete
     const product = await Product.where({
         'id': req.params.product_id

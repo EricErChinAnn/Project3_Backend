@@ -26,12 +26,16 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true
-  }))
+}))
   
+app.use(function(req,res,next){
+    res.locals.employee = req.session.employee;
+    next();
+})
 
-  app.use(flash());
+app.use(flash());
 
-  app.use(function (req, res, next) {
+app.use(function (req, res, next) {
     res.locals.success_messages = req.flash("success_messages");
     res.locals.error_messages = req.flash("error_messages");
     next();

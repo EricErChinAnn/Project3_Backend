@@ -31,3 +31,4 @@ FLUSH PRIVILEGES;
 * connect-flash
 * react-toastify
 * session-file-store
+* handlebars-helpers

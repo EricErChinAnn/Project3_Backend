@@ -19,67 +19,76 @@
             <th>Mechanics</th>
             <th>Stock</th>
 
-            <th></th>
+            <th>Edit/Delete</th>
         </tr>
 
     </thead>
     <tbody>
         {{#each products}}
-            <tr>
-                <td>
-                    {{this.id}}
-                </td>
-                <td>
-                    {{this.name}}
-                </td>
-                <td>
-                    {{this.cost}}
-                </td>
-                <td>
-                    {{this.player_min}} ~ {{this.player_max}}
-                </td>
-                <td>
-                    {{this.min_age}}
-                </td>
-                <td>
-                    {{this.difficulty.difficulty}}
-                </td>
-                <td>
-                    {{this.avg_duration}}
-                </td>
-                <td>
-                    {{this.release_date}}
-                </td>
-                <td>
-                    {{this.description}}
-                </td>
-                <td>
-                    <span class="badge bg-warning">{{this.origin.name}}</span>
-                </td>
-                <td>
-                    {{#each this.categories}}
-                        <span class="badge bg-info">{{this.category}}</span>
-                    {{/each}}
-                </td>
-                <td>
-                    {{#each this.designers}}
-                        <span class="badge bg-success">{{this.designer}}</span>
-                    {{/each}}
-                </td>
-                <td>
-                    {{#each this.mechanics}}
-                        <span class="badge bg-danger">{{this.mechanic}}</span>
-                    {{/each}}
-                </td>
-                <td>
-                    {{this.stock}}
-                </td>
+        <tr>
+            <td>
+                {{this.id}}
+            </td>
+            <td>
+                {{this.name}}
+            </td>
+            <td>
+                {{this.cost}}
+            </td>
+            <td>
+                {{this.player_min}} ~ {{this.player_max}}
+            </td>
+            <td>
+                {{this.min_age}}
+            </td>
+            <td>
+                {{this.difficulty.difficulty}}
+            </td>
+            <td>
+                {{this.avg_duration}}
+            </td>
+            <td>
+                {{this.release_date}}
+            </td>
+            <td>
+                {{this.description}}
+            </td>
+            <td>
+                <span class="badge bg-warning">{{this.origin.name}}</span>
+            </td>
+            <td>
+                {{#each this.categories}}
+                <span class="badge bg-info">{{this.category}}</span>
+                {{/each}}
+            </td>
+            <td>
+                {{#each this.designers}}
+                <span class="badge bg-success">{{this.designer}}</span>
+                {{/each}}
+            </td>
+            <td>
+                {{#each this.mechanics}}
+                <span class="badge bg-danger">{{this.mechanic}}</span>
+                {{/each}}
+            </td>
+            <td>
+                {{this.stock}}
+            </td>
 
-                <td>
-                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm">Update</a>
-                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
+            <td>
+                {{#if employee.role}}
+                <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                </div>
+                {{else}}
+                <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                </div>
+                {{/if}}
+            </td>
+        </tr>
         {{/each}}
     </tbody>
 </table>

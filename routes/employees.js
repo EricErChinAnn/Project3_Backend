@@ -1,10 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require('crypto');
 
 const { Employee } = require("../models/index");
 
 const { bootstrapField, createEmployeeLogin } = require('../forms');
 const { FullEmployeeForm } = require("../functions/employee")
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256');
+    const hash = sha256.update(password).digest('base64');
+    return hash;
+}
 
 router.get('/register', async (req,res)=>{
 
@@ -22,7 +29,7 @@ router.post('/register', async (req, res) => {
             const user = new Employee({
                 'username': form.data.username,
                 'email': form.data.email,
-                "password": form.data.password,
+                "password": getHashedPassword(form.data.password),
                 "role_id":form.data.role_id
             });
             await user.save();
@@ -72,7 +79,7 @@ router.post('/login', async (req, res) => {
                 res.redirect('/employees/login');
             } else {
                 
-                if (employee.get('password') === form.data.password) {
+                if (employee.get('password') === getHashedPassword(form.data.password)) {
                     
                     let employeeRole = employee.toJSON()
 
@@ -119,7 +126,7 @@ router.post('/login', async (req, res) => {
 router.get('/profile', (req, res) => {
     const employee = req.session.employee;
     if (!employee) {
-        req.flash('error_messages', 'You do not have permission to view this page');
+        req.flash('error_messages', 'Access Denied');
         res.redirect('/employees/login');
     } else {
         res.render('employees/profile',{
@@ -130,7 +137,19 @@ router.get('/profile', (req, res) => {
 })
 
 
+router.get('/logout', (req, res) => {
 
+    const employee = req.session.employee;
+    if (!employee) {
+        req.flash('error_messages', 'Access Denied');
+        res.redirect('/employees/login');
+    } else {
+        req.session.user = null;
+        req.flash('success_messages', "Account successfully logged out");
+        res.redirect('/employees/login');
+    }
+
+})
 
 
 module.exports = router;
