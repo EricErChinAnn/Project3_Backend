@@ -32,7 +32,8 @@ const createProductForm = (difficulties, origin ,categories,designers,mechanics)
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.maxlength(100)]
         }),
         'cost': fields.number({
             label: "Cost (CENTS)",
@@ -80,7 +81,8 @@ const createProductForm = (difficulties, origin ,categories,designers,mechanics)
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            validators: [validators.maxlength(255)]
         }),
         'stock': fields.number({
             required: true,
@@ -138,10 +140,79 @@ const createProductForm = (difficulties, origin ,categories,designers,mechanics)
             widget: widgets.multipleSelect(),
             choices : mechanics
         }),
-
     })
 };
 
 
+const createEmployeeForm = (roles)=>{
+    return forms.create({
+        'username': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:50,
+            validators: [validators.maxlength(50)]
+        }),
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:320,
+            validators: [validators.maxlength(320)]
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.maxlength(50)]
+        }),
+        'confirm_password': fields.password({
+            required: validators.required('Please re-enter password'),
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [
+                validators.matchField('password'),
+                validators.maxlength(100)
+            ]
+        }),
+        'role_id': fields.string({
+            label: "Role",
+            required: true,
+            errorAfterField: true,
+            widget:widgets.select(),
+            choices: roles
+        }),
+    })
+}
 
-module.exports = { createProductForm, bootstrapField };
+const createEmployeeLogin = ()=>{
+    return forms.create({
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+    })
+}
+
+module.exports = { 
+    bootstrapField, createProductForm,
+    createEmployeeForm, createEmployeeLogin
+ };

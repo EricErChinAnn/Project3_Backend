@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {Product} = require('../models')
-const { bootstrapField, createProductForm } = require("../forms/index")
+const { bootstrapField } = require("../forms/index")
 const { 
     replaceMTM ,
     FullProductForm
@@ -16,9 +16,7 @@ router.get('/', async (req,res)=>{
         withRelated:['difficulty',"origin","categories","designers","mechanics"]
     });
     console.log(products.toJSON())
-    let a = products.toJSON()
-    
-    // console.log(a[1].category)
+
     res.render('products/', {
         'products': products.toJSON()
     })
@@ -79,6 +77,8 @@ router.post('/create', async(req,res)=>{
 
 
             // await product.save();
+            req.flash("success_messages", `New Product <${product.get('name')}> has been created`)
+
             res.redirect('/products');
 
         },
@@ -113,7 +113,7 @@ router.get('/update/:productId', async (req, res) => {
         'id': req.params.productId
     }).fetch({
         require: true,
-        withRelated:['difficulty',"origin",'expansions',"categories","designers","mechanics"]
+        withRelated:['difficulty',"origin","categories","designers","mechanics"]
     });
 
     const productForm = await FullProductForm();
@@ -161,7 +161,7 @@ router.post("/update/:productId", async (req, res) => {
     productForm.handle(req, {
         'success': async (form) => {
             let {categories,designers,mechanics, ...formData} = form.data;
-            productEdit.set(formData);
+            await productEdit.set(formData);
         
             let newCategoriesId = categories.split(",");
             let oldCategoriesId = await productEdit.related("categories").pluck("id");
@@ -179,6 +179,7 @@ router.post("/update/:productId", async (req, res) => {
             await replaceMTM(productEdit.mechanics(),oldMechanicId,newMechanicId);
 
             productEdit.save();
+            req.flash("success_messages", `<${formData.name}> has been updated`)
             res.redirect('/products');
             
         },
@@ -190,7 +191,7 @@ router.post("/update/:productId", async (req, res) => {
             })
 
         },
-        "error":async(form)=>{
+        "empty":async(form)=>{
 
             res.render('products/update', {
                 'form': form.toHTML(bootstrapField),
@@ -229,6 +230,9 @@ router.post('/delete/:product_id', async(req,res)=>{
     }).fetch({
         require: true
     });
+
+    req.flash("error_messages", `<${product.get('name')}> has been deleted`)
+
     await product.destroy();
     res.redirect('/products')
 })

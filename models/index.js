@@ -1,12 +1,14 @@
 const bookshelf = require('../bookshelf')
 
+
+//Products
 const Product = bookshelf.model('Product', {
     tableName:'products',
     origin(){
         return this.belongsTo("Product","expansion_id")
     },
     // expansions() {
-    //     return this.belongsToMany("Product", "expansion_id")
+    //     return this.belongsToMany("Product","products","id")
     // },
     difficulty(){
         return this.belongsTo("Difficulty")
@@ -50,4 +52,35 @@ const Mechanic = bookshelf.model("Mechanic",{
     }
 })
 
-module.exports = { Product , Difficulty , Category, Designer , Mechanic};
+
+
+
+
+
+
+//User
+const Employee = bookshelf.model("Employee",{
+    tableName:"employees",
+    role(){
+        return this.belongsTo("Role")
+    },
+})
+
+const Role = bookshelf.model('Role', {
+    tableName:'roles',
+    employee(){
+        return this.hasMany("Employee")
+    }
+});
+
+const Customer = bookshelf.model("Customer",{
+    tableName:"customers"
+})
+
+
+
+module.exports = { 
+    Product , Difficulty , Category, Designer , Mechanic,
+    Employee, Role,
+    Customer
+};

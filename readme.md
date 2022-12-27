@@ -27,3 +27,7 @@ FLUSH PRIVILEGES;
 * knex
 * bookshelf
 * caolan forms
+* express-sessions
+* connect-flash
+* react-toastify
+* session-file-store
