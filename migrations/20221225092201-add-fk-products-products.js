@@ -23,7 +23,7 @@ exports.up = function(db) {
         'table':'products',
         'mapping':'id',
         'rules':{
-          'onDelete': 'cascade',
+          'onDelete': 'restrict',
           'onUpdate': 'restrict'
         }
       }    
@@ -31,6 +31,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
+  db.removeForeignKey("products", "product_product_fk");
   return db.removeColumn('products', 'expansion_id');
 };
 

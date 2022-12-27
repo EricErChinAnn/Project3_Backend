@@ -24,4 +24,6 @@ FLUSH PRIVILEGES;
 * wax-on (inheritance)
 * .env
 * nodemon
-* 
+* knex
+* bookshelf
+* caolan forms

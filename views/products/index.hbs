@@ -1,0 +1,89 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Cost (CENTS)</th>
+            <th>Players</th>
+            <th>Min Age</th>
+            <th>Difficulty</th>
+            <th>Average Duration (MINS)</th>
+            <th>Release Date</th>
+            <th>Description</th>
+            <th>Expansion</th>
+            <th>Categories</th>
+            <th>Designers</th>
+            <th>Mechanics</th>
+            <th>Stock</th>
+
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {{#each products}}
+            <tr>
+                <td>
+                    {{this.id}}
+                </td>
+                <td>
+                    {{this.name}}
+                </td>
+                <td>
+                    {{this.cost}}
+                </td>
+                <td>
+                    {{this.player_min}} ~ {{this.player_max}}
+                </td>
+                <td>
+                    {{this.min_age}}
+                </td>
+                <td>
+                    {{this.difficulty.difficulty}}
+                </td>
+                <td>
+                    {{this.avg_duration}}
+                </td>
+                <td>
+                    {{this.release_date}}
+                </td>
+                <td>
+                    {{this.description}}
+                </td>
+                <td>
+                    {{this.expansion2.name}}
+                </td>
+                <td>
+                    {{#each this.categories}}
+                        <span class="badge bg-info">{{this.category}}</span>
+                    {{/each}}
+                </td>
+                <td>
+                    {{#each this.designers}}
+                        <span class="badge bg-success">{{this.designer}}</span>
+                    {{/each}}
+                </td>
+                <td>
+                    {{#each this.mechanics}}
+                        <span class="badge bg-danger">{{this.mechanic}}</span>
+                    {{/each}}
+                </td>
+                <td>
+                    {{this.stock}}
+                </td>
+
+                <td>
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+<a href="/products/create" class="btn btn-primary btn-sm">New Product</a>
+{{/block}}
+
+{{/extends}}
