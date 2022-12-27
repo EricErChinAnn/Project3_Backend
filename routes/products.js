@@ -13,11 +13,11 @@ const {
 router.get('/', async (req,res)=>{
 
     let products = await Product.collection().fetch({
-        withRelated:['difficulty','expansion',"categories","designers","mechanics"]
+        withRelated:['difficulty',"origin","categories","designers","mechanics"]
     });
     console.log(products.toJSON())
     let a = products.toJSON()
-    console.log(a[3].expansion)
+    
     // console.log(a[1].category)
     res.render('products/', {
         'products': products.toJSON()
@@ -113,7 +113,7 @@ router.get('/update/:productId', async (req, res) => {
         'id': req.params.productId
     }).fetch({
         require: true,
-        withRelated:['difficulty','expansion',"categories","designers","mechanics"]
+        withRelated:['difficulty',"origin",'expansions',"categories","designers","mechanics"]
     });
 
     const productForm = await FullProductForm();
@@ -153,7 +153,7 @@ router.post("/update/:productId", async (req, res) => {
         'id': req.params.productId
     }).fetch({
         require: true,
-        withRelated:['difficulty','expansion',"categories","designers","mechanics"]
+        withRelated:['difficulty',"origin","categories","designers","mechanics"]
     });
 
     const productForm = await FullProductForm();

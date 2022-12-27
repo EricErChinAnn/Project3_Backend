@@ -2,9 +2,12 @@ const bookshelf = require('../bookshelf')
 
 const Product = bookshelf.model('Product', {
     tableName:'products',
-    expansion(){
-        return this.belongsTo("Product","products")
+    origin(){
+        return this.belongsTo("Product","expansion_id")
     },
+    // expansions() {
+    //     return this.belongsToMany("Product", "expansion_id")
+    // },
     difficulty(){
         return this.belongsTo("Difficulty")
     },

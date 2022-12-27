@@ -25,7 +25,7 @@ var bootstrapField = function (name, object) {
 };
 
 
-const createProductForm = (difficulties, expansion,categories,designers,mechanics) => {
+const createProductForm = (difficulties, origin ,categories,designers,mechanics) => {
     return forms.create({
         'name': fields.string({
             required: true,
@@ -109,7 +109,7 @@ const createProductForm = (difficulties, expansion,categories,designers,mechanic
             label: "Expansion",
             errorAfterField: true,
             widget:widgets.select(),
-            choices: expansion
+            choices: origin
         }),
         "categories": fields.string({
             required: true,
