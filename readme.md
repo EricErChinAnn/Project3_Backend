@@ -32,3 +32,4 @@ FLUSH PRIVILEGES;
 * react-toastify
 * session-file-store
 * handlebars-helpers
+* csurf

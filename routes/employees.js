@@ -144,7 +144,7 @@ router.get('/logout', (req, res) => {
         req.flash('error_messages', 'Access Denied');
         res.redirect('/employees/login');
     } else {
-        req.session.user = null;
+        req.session.employee = null;
         req.flash('success_messages', "Account successfully logged out");
         res.redirect('/employees/login');
     }

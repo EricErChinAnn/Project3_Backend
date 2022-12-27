@@ -5,6 +5,11 @@ require("dotenv").config();
 const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
+const csrf = require('csurf')
+
+
+const helpers = require('handlebars-helpers')();
+
 
 let app = express()
 
@@ -14,6 +19,8 @@ app.use(express.static("public"))
 
 wax.on(hbs.handlebars);
 wax.setLayoutPath("./views/layouts");
+
+hbs.handlebars.registerHelper(helpers)
 
 app.use(
     express.urlencoded({
@@ -40,6 +47,23 @@ app.use(function (req, res, next) {
     res.locals.error_messages = req.flash("error_messages");
     next();
 });
+
+app.use(csrf());
+
+app.use(function (err, req, res, next) {
+    if (err && err.code == "EBADCSRFTOKEN") {
+        req.flash('error_messages', 'Form session has expired. Please try again');
+        res.redirect('back');
+    } else {
+        next()
+    }
+});
+
+app.use(function(req,res,next){
+    res.locals.csrfToken = req.csrfToken();
+    next();
+})
+
 
 
 const landingRoutes = require("./routes/landing")

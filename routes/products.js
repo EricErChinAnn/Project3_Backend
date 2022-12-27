@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { 
-    checkIfAuthenticatedEmployee,
-    checkIfAuthenticatedManagement
+    checkIfAuthenticatedEmployee
 } = require('../middlewares');
 
 const {Product} = require('../models')
@@ -214,7 +213,7 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
 
 //Delete Product 
 
-router.get('/delete/:product_id',checkIfAuthenticatedManagement, async(req,res)=>{
+router.get('/delete/:product_id',checkIfAuthenticatedEmployee, async(req,res)=>{
     // fetch the product that we want to delete
     const product = await Product.where({
         'id': req.params.product_id
@@ -227,18 +226,41 @@ router.get('/delete/:product_id',checkIfAuthenticatedManagement, async(req,res)=
     })
 
 });
-router.post('/delete/:product_id', checkIfAuthenticatedManagement, async(req,res)=>{
+router.post('/delete/:product_id', checkIfAuthenticatedEmployee, async(req,res)=>{
     // fetch the product that we want to delete
-    const product = await Product.where({
-        'id': req.params.product_id
+    let checkIfExpansion = await Product.where({
+        "expansion_id": req.params.product_id
     }).fetch({
-        require: true
+        require: false
     });
 
-    req.flash("error_messages", `<${product.get('name')}> has been deleted`)
 
-    await product.destroy();
-    res.redirect('/products')
+    if(checkIfExpansion){
+
+        const product = await Product.where({
+            'id': req.params.product_id
+        }).fetch({
+            require: true
+        });
+
+        req.flash("error_messages", `<${product.get('name')}> has existing expansion`)
+        res.redirect('/products')
+
+    } else {
+
+        const product = await Product.where({
+            'id': req.params.product_id
+        }).fetch({
+            require: true
+        });
+    
+        req.flash("error_messages", `<${product.get('name')}> has been deleted`)
+    
+        await product.destroy();
+        res.redirect('/products')
+
+    }
+
 })
 
 

@@ -76,7 +76,28 @@
             </td>
 
             <td>
-                {{#if employee.role}}
+                {{!-- {{#if employee.role.id}}
+                {{#compare employee.role.id "<=" 2}}
+                <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                </div>
+                {{/compare}}
+                {{#eq employee.role.id 3}}
+                <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2 disabled">Delete</a>
+                </div>
+                {{/eq}}
+                {{else}}
+                <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                </div>
+                {{/if}} --}}
+
+
+                {{!-- {{#if employee}}
                 <div class="d-flex flex-column">
                     <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
                     <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
@@ -86,7 +107,13 @@
                     <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
                     <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
                 </div>
-                {{/if}}
+                {{/if}} --}}
+
+                <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                </div>
+
             </td>
         </tr>
         {{/each}}
