@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const { Employee } = require("../models/index");
 
 const { bootstrapField, createEmployeeLogin } = require('../forms');
-const { FullEmployeeForm } = require("../functions/employee")
+const { FullEmployeeForm } = require("../dal/employee")
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');

@@ -1,5 +1,5 @@
 const {Product , Difficulty, Category, Designer , Mechanic } = require('../models')
-const {createProductForm } = require("../forms/index")
+const {createProductForm, searchProductForm } = require("../forms/index")
 
 async function getAllDifficulties(){
     const allDifficulties = await Difficulty.fetchAll().map((e) => {
@@ -54,6 +54,22 @@ async function FullProductForm(){
 
     return createProductForm(allDifficulties,allExpansion,allCategories,allDesigners,allMechanics);
 }
+
+async function FullSearchForm(){
+
+    const allDifficulties = await getAllDifficulties();
+    const allCategories = await getAllCategories();
+    const allDesigners = await getAllDesigners();
+    const allMechanics = await getAllMechanics();
+
+    allDifficulties.unshift(["", 'All Difficulties']);
+
+    return searchProductForm(allDifficulties,allCategories,allDesigners,allMechanics);
+}
+
+
+
+
 module.exports = {
     getAllDifficulties, 
     getAllExpansion, 
@@ -61,7 +77,8 @@ module.exports = {
     getAllDesigners,
     getAllMechanics,
     replaceMTM,
-    FullProductForm
+    FullProductForm,
+    FullSearchForm
 }
 
 

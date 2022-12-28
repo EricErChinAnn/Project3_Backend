@@ -1,7 +1,33 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
-<table class="table">
+<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+    aria-controls="offcanvasWithBothOptions">Filter Results</button>
+
+<div class="offcanvas offcanvas-start text-bg-dark" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Search/Filter Results</h5>
+        <button type="button" class="btn-close-white " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form method="GET">
+            {{{form}}}
+            <input type="submit" class="mb-3 mt-3 btn btn-primary" value="Search" />
+        </form>
+    </div>
+</div>
+
+<a href="/products" class="btn btn-primary btn-sm">Reset Filter</a>
+
+<a href="/products/create" class="btn btn-primary btn-sm">Create New Product</a>
+{{!-- <form method="GET">
+
+    {{{form}}}
+    <input type="submit" class="mb-3 mt-3 btn btn-primary" value="Search" />
+
+</form> --}}
+<table class="table mt-2">
     <thead>
         <tr>
             <th>ID</th>
@@ -77,49 +103,47 @@
 
             <td>
                 {{!-- {{#if employee.role.id}}
-                {{#compare employee.role.id "<=" 2}}
-                <div class="d-flex flex-column">
+                {{#compare employee.role.id "<=" 2}} <div class="d-flex flex-column">
                     <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
                     <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
-                </div>
-                {{/compare}}
-                {{#eq employee.role.id 3}}
-                <div class="d-flex flex-column">
-                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
-                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2 disabled">Delete</a>
-                </div>
-                {{/eq}}
-                {{else}}
-                <div class="d-flex flex-column">
-                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
-                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
-                </div>
-                {{/if}} --}}
+                    </div>
+                    {{/compare}}
+                    {{#eq employee.role.id 3}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2 disabled">Delete</a>
+                    </div>
+                    {{/eq}}
+                    {{else}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                    </div>
+                    {{/if}} --}}
 
 
-                {{!-- {{#if employee}}
-                <div class="d-flex flex-column">
-                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
-                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
-                </div>
-                {{else}}
-                <div class="d-flex flex-column">
-                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
-                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
-                </div>
-                {{/if}} --}}
+                    {{!-- {{#if employee}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                    </div>
+                    {{else}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                    </div>
+                    {{/if}} --}}
 
-                <div class="d-flex flex-column">
-                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
-                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
-                </div>
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                    </div>
 
             </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
-<a href="/products/create" class="btn btn-primary btn-sm">New Product</a>
 {{/block}}
 
 {{/extends}}

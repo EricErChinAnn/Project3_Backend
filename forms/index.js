@@ -143,6 +143,115 @@ const createProductForm = (difficulties, origin ,categories,designers,mechanics)
     })
 };
 
+const searchProductForm = (difficulties ,categories,designers,mechanics)=>{
+    return forms.create({
+        'name': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.maxlength(100)]
+        }),
+        'min_cost': fields.number({
+            label:"Min Cost",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        }),
+          'max_cost': fields.number({
+            label:"Max Cost",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        }),
+        'player_min': fields.number({
+            label:"Min Player",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+        }),
+        'player_max': fields.number({
+            label:"Max Player",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+        }),
+        'avg_duration': fields.number({
+            label: "Max Avg Duration (MINS)",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+        }),
+        'min_age': fields.number({
+            label:"Min Age",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+        }),
+        'difficulty_id': fields.string({
+            label: "Difficulty",
+            required: false,
+            errorAfterField: true,
+            widget:widgets.select(),
+            choices: difficulties
+        }),
+        "categories": fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices : categories
+        }),
+        "designers": fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices : designers
+        }),
+        "mechanics": fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            widget: widgets.multipleSelect(),
+            choices : mechanics
+        }),
+    })
+}
+
+
+
+
+
+
+
+
+
 
 const createEmployeeForm = (roles)=>{
     return forms.create({
@@ -213,6 +322,6 @@ const createEmployeeLogin = ()=>{
 }
 
 module.exports = { 
-    bootstrapField, createProductForm,
+    bootstrapField, createProductForm, searchProductForm,
     createEmployeeForm, createEmployeeLogin
  };
