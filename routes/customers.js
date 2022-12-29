@@ -163,4 +163,39 @@ router.get('/logout', (req, res) => {
 })
 
 
+router.get('/delete/:customer_id', checkIfAuthenticatedEmployee, async (req, res) => {
+    // fetch the product that we want to delete
+    const customer = await Customer.where({
+        'id': req.params.customer_id
+    }).fetch({
+        require: true
+    });
+
+    res.render('products/delete', {
+        'product': customer.toJSON()
+    })
+
+});
+router.post('/delete/:customer_id', checkIfAuthenticatedEmployee, async (req, res) => {
+
+        const customer = await Customer.where({
+            'id': req.params.customer_id
+        }).fetch({
+            require: true
+        });
+
+        req.flash("error_messages", `<${customer.get('username')}> has been deleted`)
+
+        await customer.destroy();
+        res.redirect('/products')
+
+})
+
+
+
+
+
+
+
+
 module.exports = router;
