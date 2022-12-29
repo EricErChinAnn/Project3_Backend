@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const { Customer } = require("../models/index");
 
 const { bootstrapField, createLogin, createCustomerForm } = require('../forms');
+const { checkIfAuthenticatedEmployee } = require("../middlewares");
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
@@ -12,10 +13,24 @@ const getHashedPassword = (password) => {
     return hash;
 }
 
+
+router.get('/', checkIfAuthenticatedEmployee , async (req,res)=>{
+
+    let customers = await Customer.collection().fetch({});
+
+    res.render('customers/', {
+        'customers': customers.toJSON()
+    })
+
+})
+
+
+
+
 router.get('/register', async (req,res)=>{
 
     const registerForm = await createCustomerForm();
-    res.render('employees/register', {
+    res.render('customers/register', {
         'form': registerForm.toHTML(bootstrapField)
     })
 })
@@ -78,26 +93,22 @@ router.post('/login', async (req, res) => {
 
             if (!customer) {
                 req.flash("error_messages", "Sorry, the authentication details you provided does not work.")
-                res.redirect('/employees/login');
+                res.redirect('/customers/login');
             } else {
                 
                 if (customer.get('password') === getHashedPassword(form.data.password)) {
                     
 
                     // store in session
-                    req.session.customer = {
-                        id: customer.get('id'),
-                        username: customer.get('username'),
-                        email: customer.get('email'),
-                    }
+                    req.session.customer = customer
 
                     req.flash("success_messages", `Welcome back, ${customer.get('username')}`);
-                    res.redirect('/employees/profile');
+                    res.redirect('/customers/profile');
 
                 } else {
 
                     req.flash("error_messages", "Sorry, the authentication details you provided does not work.")
-                    res.redirect('/employees/login')
+                    res.redirect('/customers/login')
 
                 }
             }
@@ -124,13 +135,13 @@ router.post('/login', async (req, res) => {
 
 
 router.get('/profile', (req, res) => {
-    const employee = req.session.employee;
-    if (!employee) {
+    const customer = req.session.customer;
+    if (!customer) {
         req.flash('error_messages', 'Access Denied');
-        res.redirect('/employees/login');
+        res.redirect('/customers/login');
     } else {
-        res.render('employees/profile',{
-            'employee': employee
+        res.render('customers/profile',{
+            'customer': customer
         })
     }
 
@@ -139,14 +150,14 @@ router.get('/profile', (req, res) => {
 
 router.get('/logout', (req, res) => {
 
-    const employee = req.session.employee;
-    if (!employee) {
+    const customer = req.session.customer;
+    if (!customer) {
         req.flash('error_messages', 'Access Denied');
-        res.redirect('/employees/login');
+        res.redirect('/customers/login');
     } else {
-        req.session.employee = null;
+        req.session.customer = null;
         req.flash('success_messages', "Account successfully logged out");
-        res.redirect('/employees/login');
+        res.redirect('/customers/login');
     }
 
 })

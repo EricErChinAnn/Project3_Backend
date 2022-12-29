@@ -36,16 +36,29 @@
           </li>
         </ul>
       </div>
-      <div>
-        {{#if employee}}
-        Welcome back, {{employee.username}}
-        <a href="/employees/logout" class="btn btn-danger btn-sm">Logout</a>
-        {{else}}
+      <div class="d-flex flex-column">
         <div>
-          Don't have an employee account? <a href="/employees/register" class="me-1">Sign up</a>
-          <a href="/employees/login" class="btn btn-primary btn-sm">Login</a>
+          {{#if employee}}
+          Welcome back, <a href="/employees/profile">{{employee.username}}</a>
+          <a href="/employees/logout" class="btn btn-danger btn-sm">Logout</a>
+          {{else}}
+          <div>
+            Don't have an employee account? <a href="/employees/register" class="me-1">Sign up</a>
+            <a href="/employees/login" class="btn btn-primary btn-sm">Employee Login</a>
+          </div>
+          {{/if}}
         </div>
-        {{/if}}
+        <div>
+          {{#if customer}}
+          Welcome back, <a href="/customers/profile">{{customer.username}}</a>
+          <a href="/customers/logout" class="btn btn-danger btn-sm">Logout</a>
+          {{else}}
+          <div>
+            Don't have an customer account? <a href="/customers/register" class="me-1">Sign up</a>
+            <a href="/customers/login" class="btn btn-primary btn-sm">Customer Login</a>
+          </div>
+          {{/if}}
+        </div>
       </div>
     </div>
   </nav>

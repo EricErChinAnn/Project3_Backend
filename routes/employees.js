@@ -28,11 +28,6 @@ router.get('/', checkIfAuthenticatedEmployee , async (req,res)=>{
 })
 
 
-
-
-
-
-
 router.get('/register', async (req,res)=>{
 
     const registerForm = await FullEmployeeForm();

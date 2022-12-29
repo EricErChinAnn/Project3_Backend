@@ -1,0 +1,63 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<table class="table mt-2">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>DOB</th>
+            <th>Contact</th>
+            <th>Postal Code</th>
+            <th>Address Line 1</th>
+            <th>Address Line 2</th>
+            <th>Country</th>
+
+            <th>Edit/Delete</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {{#each customers}}
+        <tr>
+            <td>
+                {{this.id}}
+            </td>
+            <td>
+                {{this.username}}
+            </td>
+            <td>
+                {{this.email}}
+            </td>
+            <td>
+                {{this.dob}}
+            </td>
+            <td>
+                {{this.contact}}
+            </td>
+            <td>
+                {{this.postal_code}}
+            </td>
+            <td>
+                {{this.address_line_1}}
+            </td>
+            <td>
+                {{this.address_line_2}}
+            </td>
+            <td>
+                {{this.country}}
+            </td>
+            <td>
+                <div class="d-flex flex-column">
+                    <a href="#" class="btn btn-primary btn-sm mb-2">Update</a>
+                    <a href="#" class="btn btn-danger btn-sm mb-2">Delete</a>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+
+{{/extends}}

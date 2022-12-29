@@ -1,0 +1,18 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<h1>Customers Profile</h1>
+<ul>
+    <li>Username: {{customer.username}}</li>
+    <li>Email: {{customer.email}}</li>
+    <li>Date of birth: {{customer.dob}}</li>
+    <li>Contact: {{customer.contact}}</li>
+    <li>Postal Code: {{customer.postal_code}}</li>
+    <li>Address Line 1: {{customer.address_line_1}}</li>
+    <li>Address Line 2: {{customer.address_line_2}}</li>
+    <li>Country: {{customer.country}}</li>   
+</ul>
+
+{{/block}}
+
+{{/extends}}
