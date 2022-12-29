@@ -10,6 +10,9 @@ const csrf = require('csurf')
 
 const helpers = require('handlebars-helpers')();
 
+hbs.handlebars.registerHelper("dateDisplay", function(date){
+    return date.toISOString().slice(0,10)
+})
 
 let app = express()
 

@@ -74,7 +74,8 @@ const createProductForm = (difficulties, origin ,categories,designers,mechanics)
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget:widgets.date(),
         }),
         'description': fields.string({
             required: true,
@@ -346,7 +347,8 @@ const createCustomerForm = (roles)=>{
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            }
+            },
+            widget:widgets.date(),
         }),
         'contact': fields.string({
             required: true,

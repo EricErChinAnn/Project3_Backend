@@ -7,7 +7,7 @@
             <th>Id</th>
             <th>Username</th>
             <th>Email</th>
-            <th>DOB</th>
+            <th>DOB (YYYY-MM-DD)</th>
             <th>Contact</th>
             <th>Postal Code</th>
             <th>Address Line 1</th>
@@ -31,7 +31,8 @@
                 {{this.email}}
             </td>
             <td>
-                {{this.dob}}
+                {{#dateDisplay this.dob}}
+                {{/dateDisplay}}
             </td>
             <td>
                 {{this.contact}}

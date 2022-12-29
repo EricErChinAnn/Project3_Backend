@@ -37,7 +37,7 @@
             <th>Min Age</th>
             <th>Difficulty</th>
             <th>Average Duration (MINS)</th>
-            <th>Release Date</th>
+            <th>Release Date (YYYY-MM-DD)</th>
             <th>Description</th>
             <th>Expansion</th>
             <th>Categories</th>
@@ -74,7 +74,8 @@
                 {{this.avg_duration}}
             </td>
             <td>
-                {{this.release_date}}
+                {{#dateDisplay this.release_date}}
+                {{/dateDisplay}}
             </td>
             <td>
                 {{this.description}}
@@ -111,35 +112,15 @@
                     {{#eq ../employee.role.id 3}}
                     <div class="d-flex flex-column">
                         <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
-                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2 disabled">Delete</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-secondary btn-sm mb-2 disabled">Delete</a>
                     </div>
                     {{/eq}}
                     {{else}}
                     <div class="d-flex flex-column">
-                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
-                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                        <a href="/products/update/{{this.id}}" class="btn btn-secondary btn-sm disabled mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-secondary btn-sm disabled mb-2">Delete</a>
                     </div>
                     {{/if}}
-
-
-                    {{!-- {{#if ../employee}}
-                    <div class="d-flex flex-column">
-                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
-                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
-                    </div>
-                    {{else}}
-                    
-                    <div class="d-flex flex-column">
-                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
-                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
-                    </div>
-                    {{/if}} --}}
-
-                    {{!-- <div class="d-flex flex-column">
-                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
-                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
-                    </div> --}}
-
             </td>
         </tr>
         {{/each}}
