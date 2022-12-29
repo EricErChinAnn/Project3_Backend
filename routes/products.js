@@ -33,7 +33,6 @@ router.get('/', async (req, res) => {
 
     let products = await Product.collection()
 
-
     searchForm.handle(req, {
         'empty': async (form) => {
 
@@ -110,6 +109,8 @@ router.get('/', async (req, res) => {
             let productsResults = await products.fetch({
                 withRelated: ['difficulty', "origin", "categories", "designers", "mechanics"]
             })
+
+        
             res.render('products/index', {
                 'products': productsResults.toJSON(),
                 'form': form.toHTML(bootstrapField)
@@ -156,7 +157,7 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
             if (form.data.expansion_id) {
                 product.set('expansion_id', form.data.expansion_id);
             }
-            await product.save();
+            const savedProduct = await product.save();
             // let productData = {categories,designers,mechanics, ...form.data}
             // const product = new Product(productData);
 

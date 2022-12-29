@@ -43,7 +43,7 @@ exports.up = function(db) {
       notNull:true,
     },
     contact:{
-      type:"smallint",
+      type:"int",
       notNull: true,
       unsigned:true
     },

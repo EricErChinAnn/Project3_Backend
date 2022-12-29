@@ -24,7 +24,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-
+// Products related
 const createProductForm = (difficulties, origin ,categories,designers,mechanics) => {
     return forms.create({
         'name': fields.string({
@@ -252,7 +252,7 @@ const searchProductForm = (difficulties ,categories,designers,mechanics)=>{
 
 
 
-
+//Account related
 const createEmployeeForm = (roles)=>{
     return forms.create({
         'username': fields.string({
@@ -301,8 +301,100 @@ const createEmployeeForm = (roles)=>{
         }),
     })
 }
-
-const createEmployeeLogin = ()=>{
+const createCustomerForm = (roles)=>{
+    return forms.create({
+        'username': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:75,
+            validators: [validators.maxlength(75)]
+        }),
+        'email': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:155,
+            validators: [validators.maxlength(155)]
+        }),
+        'password': fields.password({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.maxlength(155)]
+        }),
+        'confirm_password': fields.password({
+            required: validators.required('Please re-enter password'),
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [
+                validators.matchField('password'),
+                validators.maxlength(155)
+            ]
+        }),
+        'dob': fields.date({
+            label:"Date of birth",
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            }
+        }),
+        'contact': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            // validators: [validators.integer()]
+        }),
+        'postal_code': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:25,
+            validators: [validators.maxlength(25)]
+        }),
+        'address_line_1': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:155,
+            validators: [validators.maxlength(155)]
+        }),
+        'address_line_2': fields.string({
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:155,
+            validators: [validators.maxlength(155)]
+        }),
+        'country': fields.string({
+            required: true,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            length:155,
+            validators: [validators.maxlength(70)]
+        }),
+    })
+}
+const createLogin = ()=>{
     return forms.create({
         'email': fields.string({
             required: true,
@@ -321,7 +413,12 @@ const createEmployeeLogin = ()=>{
     })
 }
 
+
+
+
+
+
 module.exports = { 
     bootstrapField, createProductForm, searchProductForm,
-    createEmployeeForm, createEmployeeLogin
+    createEmployeeForm, createCustomerForm, createLogin
  };

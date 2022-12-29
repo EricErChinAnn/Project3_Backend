@@ -37,6 +37,7 @@ app.use(session({
   
 app.use(function(req,res,next){
     res.locals.employee = req.session.employee;
+    res.locals.customer = req.session.customer;
     next();
 })
 
@@ -69,6 +70,7 @@ app.use(function(req,res,next){
 const landingRoutes = require("./routes/landing")
 const productsRoutes = require("./routes/products")
 const employeesRoutes = require("./routes/employees")
+const customersRoutes = require("./routes/customers")
 
 
 async function main(){
@@ -76,6 +78,7 @@ async function main(){
     app.use("/", landingRoutes)
     app.use("/products", productsRoutes)
     app.use("/employees", employeesRoutes)
+    app.use("/customers", customersRoutes)
 }
 
 main();

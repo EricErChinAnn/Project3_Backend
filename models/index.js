@@ -21,6 +21,9 @@ const Product = bookshelf.model('Product', {
     },
     mechanics(){
         return this.belongsToMany('Mechanic')
+    },
+    images(){
+        return this.hasMany("Image")
     }
 });
 
@@ -52,13 +55,18 @@ const Mechanic = bookshelf.model("Mechanic",{
     }
 })
 
+const Image = bookshelf.model('Image', {
+    tableName:'images',
+    products(){
+        return this.belongsTo("Product")
+    }
+});
 
 
 
 
 
-
-//User
+//User Employee
 const Employee = bookshelf.model("Employee",{
     tableName:"employees",
     role(){
@@ -73,6 +81,13 @@ const Role = bookshelf.model('Role', {
     }
 });
 
+
+
+
+
+
+
+//Customers
 const Customer = bookshelf.model("Customer",{
     tableName:"customers"
 })
@@ -80,7 +95,7 @@ const Customer = bookshelf.model("Customer",{
 
 
 module.exports = { 
-    Product , Difficulty , Category, Designer , Mechanic,
+    Product , Difficulty , Category, Designer , Mechanic, Image,
     Employee, Role,
     Customer
 };

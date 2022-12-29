@@ -2,11 +2,9 @@ const express = require("express");
 const router = express.Router();
 const crypto = require('crypto');
 
-const { Employee } = require("../models/index");
+const { Customer } = require("../models/index");
 
-const { bootstrapField, createLogin } = require('../forms');
-const { FullEmployeeForm } = require("../dal/employee");
-const { checkIfAuthenticatedEmployee } = require("../middlewares");
+const { bootstrapField, createLogin, createCustomerForm } = require('../forms');
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
@@ -14,28 +12,9 @@ const getHashedPassword = (password) => {
     return hash;
 }
 
-
-router.get('/', checkIfAuthenticatedEmployee , async (req,res)=>{
-
-    let employees = await Employee.collection().fetch({
-        withRelated:['role']
-    });
-
-    res.render('employees/', {
-        'employees': employees.toJSON()
-    })
-
-})
-
-
-
-
-
-
-
 router.get('/register', async (req,res)=>{
 
-    const registerForm = await FullEmployeeForm();
+    const registerForm = await createCustomerForm();
     res.render('employees/register', {
         'form': registerForm.toHTML(bootstrapField)
     })
@@ -43,26 +22,31 @@ router.get('/register', async (req,res)=>{
 
 router.post('/register', async (req, res) => {
 
-    const registerForm = await FullEmployeeForm();
+    const registerForm = await createCustomerForm();
     registerForm.handle(req, {
         success: async (form) => {
-            const user = new Employee({
+            const user = new Customer({
                 'username': form.data.username,
                 'email': form.data.email,
                 "password": getHashedPassword(form.data.password),
-                "role_id":form.data.role_id
+                "dob":form.data.dob,
+                "contact":form.data.contact,
+                "postal_code":form.data.postal_code,
+                "address_line_1":form.data.address_line_1,
+                "address_line_2":form.data.address_line_2,
+                "country":form.data.country,
             });
             await user.save();
-            req.flash("success_messages", "User signed up successfully!");
-            res.redirect('/employees/login')
+            req.flash("success_messages", "Customer signed up successfully!");
+            res.redirect('/customers/login')
         },
         'error': (form) => {
-            res.render('employees/register', {
+            res.render('customers/register', {
                 'form': form.toHTML(bootstrapField)
             })
         },
         "empty": (form) => {
-            res.render('employees/register', {
+            res.render('customers/register', {
                 'form': form.toHTML(bootstrapField)
             })
         }
@@ -73,45 +57,41 @@ router.post('/register', async (req, res) => {
 
 router.get('/login', async (req,res)=>{
 
-    const employeeLogin = await createLogin();
-    res.render('employees/login',{
-        "form": employeeLogin.toHTML(bootstrapField)
+    const customerLogin = await createLogin();
+    res.render('customers/login',{
+        "form": customerLogin.toHTML(bootstrapField)
     })
 })
 
 router.post('/login', async (req, res) => {
 
-    const employeeLogin = await createLogin();
+    const customerLogin = await createLogin();
 
-    employeeLogin.handle(req, {
+    customerLogin.handle(req, {
         'success': async (form) => {
 
-            let employee = await Employee.where({
+            let customer = await Customer.where({
                 'email': form.data.email
             }).fetch({
-               require:false,
-               withRelated:["role"]
-            }
-            );
+               require:false
+            });
 
-            if (!employee) {
+            if (!customer) {
                 req.flash("error_messages", "Sorry, the authentication details you provided does not work.")
                 res.redirect('/employees/login');
             } else {
                 
-                if (employee.get('password') === getHashedPassword(form.data.password)) {
+                if (customer.get('password') === getHashedPassword(form.data.password)) {
                     
-                    let employeeRole = employee.toJSON()
 
                     // store in session
-                    req.session.employee = {
-                        id: employee.get('id'),
-                        username: employee.get('username'),
-                        email: employee.get('email'),
-                        role: employeeRole.role
+                    req.session.customer = {
+                        id: customer.get('id'),
+                        username: customer.get('username'),
+                        email: customer.get('email'),
                     }
 
-                    req.flash("success_messages", `Welcome back, ${employee.get('username')}`);
+                    req.flash("success_messages", `Welcome back, ${customer.get('username')}`);
                     res.redirect('/employees/profile');
 
                 } else {
@@ -126,7 +106,7 @@ router.post('/login', async (req, res) => {
 
             req.flash("error_messages", "There are some problems logging you in. Please fill in the form again")
 
-            res.render('employees/login', {
+            res.render('customer/login', {
                 'form': form.toHTML(bootstrapField)
             })
 
@@ -134,7 +114,7 @@ router.post('/login', async (req, res) => {
 
             req.flash("error_messages", "There are some problems logging you in. Please fill in the form again")
             
-            res.render('employees/login', {
+            res.render('customer/login', {
                 'form': form.toHTML(bootstrapField)
             })
 

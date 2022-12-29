@@ -29,7 +29,6 @@ FLUSH PRIVILEGES;
 * caolan forms
 * express-sessions
 * connect-flash
-* react-toastify
 * session-file-store
 * handlebars-helpers
 * csurf

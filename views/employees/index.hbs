@@ -1,0 +1,76 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<table class="table mt-2">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            
+            <th>Edit/Delete</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {{#each employees}}
+        <tr>
+            <td>
+                {{this.id}}
+            </td>
+            <td>
+                {{this.username}}
+            </td>
+            <td>
+                {{this.email}}
+            </td>
+            <td>
+                {{this.role.role}}
+            </td>
+            <td>
+                {{!-- {{#if employee.role.id}}
+                {{#compare employee.role.id "<=" 2}} <div class="d-flex flex-column">
+                    <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                    <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                    </div>
+                    {{/compare}}
+                    {{#eq employee.role.id 3}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2 disabled">Delete</a>
+                    </div>
+                    {{/eq}}
+                    {{else}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                    </div>
+                    {{/if}} --}}
+
+
+                    {{!-- {{#if employee}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                    </div>
+                    {{else}}
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm disabled mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm disabled mb-2">Delete</a>
+                    </div>
+                    {{/if}} --}}
+
+                    <div class="d-flex flex-column">
+                        <a href="/products/update/{{this.id}}" class="btn btn-primary btn-sm mb-2">Update</a>
+                        <a href="/products/delete/{{this.id}}" class="btn btn-danger btn-sm mb-2">Delete</a>
+                    </div>
+
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+
+{{/extends}}
