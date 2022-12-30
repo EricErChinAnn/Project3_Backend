@@ -43,6 +43,7 @@
             <th>Categories</th>
             <th>Designers</th>
             <th>Mechanics</th>
+            <th>Picture/s</th>
             <th>Stock</th>
 
             <th>Edit/Delete</th>
@@ -97,6 +98,49 @@
                 {{#each this.mechanics}}
                 <span class="badge bg-danger">{{this.mechanic}}</span>
                 {{/each}}
+            </td>
+            <td>
+
+
+{{#if this.images}}
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://image.shutterstock.com/image-vector/picture-icon-260nw-413647060.jpg" class="d-block w-100" alt="...">
+    </div>
+    {{#each this.images}}
+    <div class="carousel-item">
+      <img src={{this.image_url}} class="d-block w-100" alt="...">
+    </div>
+    {{/each}}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+{{/if}}
+
+
+
+
+
+
+
+
+
+
+
+                {{!-- <div>
+                {{#each this.images}}
+                    <img src="{{this.image_url_thumb}}"/>
+                {{/each}}
+                </div> --}}
             </td>
             <td>
                 {{this.stock}}

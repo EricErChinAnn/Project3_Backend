@@ -32,3 +32,4 @@ FLUSH PRIVILEGES;
 * session-file-store
 * handlebars-helpers
 * csurf
+* cloudinary 

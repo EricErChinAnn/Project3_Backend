@@ -4,7 +4,7 @@ const {
     checkIfAuthenticatedEmployee
 } = require('../middlewares');
 
-const { Product } = require('../models')
+const { Product, Image } = require('../models')
 const { bootstrapField } = require("../forms/index")
 const {
     replaceMTM,
@@ -37,22 +37,30 @@ router.get('/', async (req, res) => {
         'empty': async (form) => {
 
             let productsResult = await products.fetch({
-                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics"]
+                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
             })
+            
             res.render('products/index', {
                 'products': productsResult.toJSON(),
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
         },
         'error': async (form) => {
 
             let productsResult = await products.fetch({
-                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics"]
+                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
             })
+
             res.render('products/index', {
                 'products': productsResult.toJSON(),
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
         },
@@ -113,7 +121,10 @@ router.get('/', async (req, res) => {
         
             res.render('products/index', {
                 'products': productsResults.toJSON(),
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
 
@@ -132,7 +143,10 @@ router.get('/create', checkIfAuthenticatedEmployee, async (req, res) => {
     const productForm = await FullProductForm();
 
     res.render('products/create', {
-        'form': productForm.toHTML(bootstrapField)
+        'form': productForm.toHTML(bootstrapField),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     })
 })
 
@@ -142,6 +156,7 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
     productForm.handle(req, {
         'success': async (form) => {
+
             const product = new Product();
 
             product.set('name', form.data.name);
@@ -163,7 +178,7 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
             if (form.data.categories) {
                 await product.categories().attach(form.data.categories.split(","));
-                console.log(form.data.categories.split(","))
+                // console.log(form.data.categories.split(","))
             }
             if (form.data.designers) {
                 await product.designers().attach(form.data.designers.split(","));
@@ -173,7 +188,29 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
             }
 
 
-            // await product.save();
+            
+            let imageArray = form.data.image_url.split(" ")
+            let imageThumbArray = form.data.image_url_thumb.split(" ")
+
+            for (let i = 0; i < imageArray.length; i++){
+                if(imageArray[i]){
+                    const image = new Image();
+
+                    image.set('product_id', savedProduct.id);
+                    image.set('image_url', imageArray[i]);
+                    image.set('image_url_thumb', imageThumbArray[i]);
+    
+                    await image.save();
+                }
+            }
+
+            
+            
+
+
+
+
+
             req.flash("success_messages", `New Product <${product.get('name')}> has been created`)
 
             res.redirect('/products');
@@ -182,14 +219,20 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
         "empty": async (form) => {
 
             res.render("products/create.hbs", {
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
         },
         "error": async (form) => {
 
             res.render("products/create.hbs", {
-                'form': form.toHTML(bootstrapField)
+                'form': form.toHTML(bootstrapField),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
         }
@@ -210,7 +253,7 @@ router.get('/update/:productId', checkIfAuthenticatedEmployee, async (req, res) 
         'id': req.params.productId
     }).fetch({
         require: true,
-        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics"]
+        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
     });
 
     const productForm = await FullProductForm();
@@ -237,9 +280,14 @@ router.get('/update/:productId', checkIfAuthenticatedEmployee, async (req, res) 
     productForm.fields.mechanics.value = selectedMechanics;
 
 
+
+
     res.render('products/update', {
         'form': productForm.toHTML(bootstrapField),
-        'product': productEdit.toJSON()
+        'product': productEdit.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     })
 
 })
@@ -250,7 +298,7 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
         'id': req.params.productId
     }).fetch({
         require: true,
-        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics"]
+        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
     });
 
     const productForm = await FullProductForm();
@@ -275,7 +323,44 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
             let oldMechanicId = await productEdit.related("mechanics").pluck("id");
             await replaceMTM(productEdit.mechanics(), oldMechanicId, newMechanicId);
 
+
+
+            const imagesCurrent = await Image.where({
+                'product_id': req.params.productId
+            })
+            // .fetchAll({
+            //     require: true
+            // })
+            .destroy();
+    
+            // if(imagesCurrent.toJSON()){
+            //     // await imagesCurrent.destroy();
+            //     for (let i = 0; i < imagesCurrent.toJSON().length; i++){
+            //         await imagesCurrent.destroy();
+            //     }
+            // }
+
+
+
+            let imageArray = form.data.image_url.split(" ")
+            let imageThumbArray = form.data.image_url_thumb.split(" ")
+
+            for (let i = 0; i < imageArray.length; i++){
+                if(imageArray[i]){
+                    const image = new Image();
+
+                    image.set('product_id', req.params.productId);
+                    image.set('image_url', imageArray[i]);
+                    image.set('image_url_thumb', imageThumbArray[i]);
+    
+                    await image.save();
+                }
+            }
+
+
             productEdit.save();
+
+
             req.flash("success_messages", `<${formData.name}> has been updated`)
             res.redirect('/products');
 
@@ -284,7 +369,10 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
 
             res.render('products/update', {
                 'form': form.toHTML(bootstrapField),
-                'product': productEdit.toJSON()
+                'product': productEdit.toJSON(),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
         },
@@ -292,7 +380,10 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
 
             res.render('products/update', {
                 'form': form.toHTML(bootstrapField),
-                'product': productEdit.toJSON()
+                'product': productEdit.toJSON(),
+                cloudinaryName: process.env.CLOUDINARY_NAME,
+                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
             })
 
         }
@@ -316,7 +407,10 @@ router.get('/delete/:product_id', checkIfAuthenticatedEmployee, async (req, res)
     });
 
     res.render('products/delete', {
-        'product': product.toJSON()
+        'product': product.toJSON(),
+        cloudinaryName: process.env.CLOUDINARY_NAME,
+        cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+        cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
     })
 
 });

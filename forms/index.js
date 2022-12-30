@@ -141,6 +141,12 @@ const createProductForm = (difficulties, origin ,categories,designers,mechanics)
             widget: widgets.multipleSelect(),
             choices : mechanics
         }),
+        "image_url": fields.string({
+            widget: widgets.hidden()
+        }),
+        "image_url_thumb": fields.string({
+            widget: widgets.hidden()
+        }),
     })
 };
 
@@ -244,7 +250,6 @@ const searchProductForm = (difficulties ,categories,designers,mechanics)=>{
         }),
     })
 }
-
 
 
 
