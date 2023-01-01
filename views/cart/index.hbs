@@ -1,0 +1,130 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<h1>My Shopping Cart</h1>
+<table class="table mt-2">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Picture/s</th>
+            <th>Expansion</th>
+            <th>Categories</th>
+            <th>Designers</th>
+            <th>Mechanics</th>
+            <th>Cost (CENTS)</th>
+            <th>Quantity</th>
+            <th>Cost Sum</th>
+            <th>Edit/Delete</th>
+        </tr>
+
+    </thead>
+    {{#each shoppingCart}}
+    <tbody style="height: 100px">
+        <tr>
+            <td>
+                {{this.product.name}}
+            </td>
+             <td>
+                {{#each this.product.mechanics}}
+                <span class="badge bg-danger">{{this.mechanic}}</span>
+                {{/each}}
+            </td>
+            <td>
+                {{#if this.product.images}}
+
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://image.shutterstock.com/image-vector/picture-icon-260nw-413647060.jpg"
+                                class="d-block" style="width: 80px; height: 100px" alt="...">
+                        </div>
+                        {{#each this.product.images}}
+                        <div class="carousel-item">
+                            <img src={{this.image_url}} style="width: 80px; height: 100px" class="d-block" alt="...">
+                        </div>
+                        {{/each}}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                {{/if}}
+                {{!-- <div>
+                    {{#each this.images}}
+                    <img src="{{this.image_url_thumb}}" />
+                    {{/each}}
+                </div> --}}
+            </td>
+            <td>
+                <span class="badge bg-warning">{{this.product.origin.name}}</span>
+            </td>
+            <td>
+                {{#each this.product.categories}}
+                <span class="badge bg-info">{{this.category}}</span>
+                {{/each}}
+            </td>
+            <td>
+                {{#each this.product.designers}}
+                <span class="badge bg-success">{{this.designer}}</span>
+                {{/each}}
+            </td>
+            <td>
+                {{this.product.cost}}
+            </td>
+            <td>
+                {{this.quantity}}
+            </td>
+            <td>
+                {{#quatityCost this.product.cost this.quantity}}
+                {{/quatityCost}}
+            </td>
+            <td>
+                <div>
+                <a href="/cart/{{this.product.id}}/remove" class="btn btn-danger">Remove</a>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    {{/each}}
+    <tbody>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+                <h5>
+                Total:
+                </h5>
+            </td>
+            <td>
+                <h5>
+                {{#totalCartCost shoppingCart}}
+                {{/totalCartCost}}
+                </h5>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{/block}}
+
+{{/extends}}

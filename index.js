@@ -14,6 +14,19 @@ hbs.handlebars.registerHelper("dateDisplay", function(date){
     return date.toISOString().slice(0,10)
 })
 
+hbs.handlebars.registerHelper("quatityCost", function(quantity,cost){
+    return "$" + ((quantity*cost)/100).toFixed(2)
+})
+
+hbs.handlebars.registerHelper("totalCartCost", function(shoppingCart){
+    let total = 0
+    for (let i = 0; i < shoppingCart.length; i++){
+        total += (Number(shoppingCart[i].product.cost) * Number(shoppingCart[i].quantity))
+    }
+
+    return "$" + ((total)/100).toFixed(2)
+})
+
 let app = express()
 
 app.set("view engine","hbs");
@@ -75,6 +88,7 @@ const productsRoutes = require("./routes/products")
 const employeesRoutes = require("./routes/employees")
 const customersRoutes = require("./routes/customers")
 const cloudinaryRoutes = require("./routes/cloudinary")
+const cartRoutes = require("./routes/shoppingCart")
 
 
 async function main(){
@@ -83,7 +97,8 @@ async function main(){
     app.use("/products", productsRoutes)
     app.use("/employees", employeesRoutes)
     app.use("/customers", customersRoutes)
-    app.use('/cloudinary', cloudinaryRoutes);
+    app.use('/cloudinary', cloudinaryRoutes)
+    app.use("/cart",cartRoutes)
 }
 
 main();

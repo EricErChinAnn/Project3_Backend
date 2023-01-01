@@ -32,7 +32,7 @@ exports.up = function (db) {
               table: 'customers',
               rules: {
                   onDelete: 'CASCADE',
-                  onUpdate: 'RESTRICT'
+                  onUpdate: 'CASCADE'
               },
               mapping: 'id'
           }
