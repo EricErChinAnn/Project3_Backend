@@ -9,14 +9,14 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
   <title>TIC-TAX-TOE</title>
 </head>
 
 <body>
 
 
-  <nav class="navbar navbar-expand-lg bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Tic-Tax-Toe</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -36,24 +36,32 @@
           </li>
         </ul>
       </div>
+        {{#if customer}}
+        <div class="d-flex justify-content-center align-items-center me-5">
+          <a style="position: absolute;" href="/cart" ><h1><i class="bi bi-basket2-fill"></i></h1></a>
+          {{#if cartItemCount}}
+          <h3 style="position: absolute;color:white; text-shadow: 2px 2px #070707;">{{cartItemCount}}</h3>
+          {{/if}}
+        </div>
+        {{/if}}
       <div class="d-flex flex-column">
-        <div>
+        <div style="color:white">
           {{#if employee}}
           Welcome back, <a href="/employees/profile">{{employee.username}}</a>
           <a href="/employees/logout" class="btn btn-danger btn-sm">Logout</a>
           {{else}}
-          <div>
+          <div style="color:white">
             Don't have an employee account? <a href="/employees/register" class="me-1">Sign up</a>
             <a href="/employees/login" class="btn btn-primary btn-sm">Employee Login</a>
           </div>
           {{/if}}
         </div>
-        <div>
+        <div style="color:white">
           {{#if customer}}
           Welcome back, <a href="/customers/profile">{{customer.username}}</a>
           <a href="/customers/logout" class="btn btn-danger btn-sm">Logout</a>
           {{else}}
-          <div>
+          <div style="color:white">
             Don't have an customer account? <a href="/customers/register" class="me-1">Sign up</a>
             <a href="/customers/login" class="btn btn-primary btn-sm">Customer Login</a>
           </div>

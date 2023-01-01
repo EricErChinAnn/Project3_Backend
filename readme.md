@@ -33,3 +33,5 @@ FLUSH PRIVILEGES;
 * handlebars-helpers
 * csurf
 * cloudinary 
+* stripe
+* bootstrap-icons

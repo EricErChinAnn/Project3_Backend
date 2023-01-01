@@ -6,6 +6,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
 const csrf = require('csurf')
+const { getCart } = require("./dal/cart");
 
 
 const helpers = require('handlebars-helpers')();
@@ -81,7 +82,15 @@ app.use(function(req,res,next){
     next();
 })
 
-
+app.use(async(req,res,next)=>{
+    if(req.session.customer){
+        const cartItems = await getCart(req.session.customer.id)
+        res.locals.cartItemCount = cartItems.toJSON().length;
+    }else{
+        res.locals.cartItemCount = 0;
+    }
+    next();
+})
 
 const landingRoutes = require("./routes/landing")
 const productsRoutes = require("./routes/products")
@@ -89,6 +98,7 @@ const employeesRoutes = require("./routes/employees")
 const customersRoutes = require("./routes/customers")
 const cloudinaryRoutes = require("./routes/cloudinary")
 const cartRoutes = require("./routes/shoppingCart")
+const checkoutRoutes = require("./routes/checkout")
 
 
 async function main(){
@@ -99,6 +109,7 @@ async function main(){
     app.use("/customers", customersRoutes)
     app.use('/cloudinary', cloudinaryRoutes)
     app.use("/cart",cartRoutes)
+    app.use("/checkout",checkoutRoutes)
 }
 
 main();
