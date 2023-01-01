@@ -39,7 +39,7 @@ router.post('/:product_id/quantity/update', async(req,res)=>{
     let cart = new CartServices(req.session.customer.id);
     await cart.setQuantity(req.params.product_id, req.body.newQuantity);
     req.flash("success_messages", "Quantity updated")
-    res.redirect('/cart/');
+    res.redirect('/cart');
   })
 
 
