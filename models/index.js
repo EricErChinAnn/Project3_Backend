@@ -89,7 +89,10 @@ const Role = bookshelf.model('Role', {
 
 //Customers
 const Customer = bookshelf.model("Customer",{
-    tableName:"customers"
+    tableName:"customers",
+    orders(){
+        return this.belongsToMany('Order')
+    }
 })
 
 
@@ -108,7 +111,24 @@ const CartItem = bookshelf.model("CartItem",{
 })
 
 
+//Order
+const Order = bookshelf.model("Order",{
+    tableName:"orders",
+    customers(){
+        return this.belongsToMany('Customer')
+    },
+    statuses(){
+        return this.hasMany("Status")
+    }
 
+})
+
+const Status = bookshelf.model("Status",{
+    tableName:"statuses",
+    orders(){
+        return this.belongsTo("Order")
+    }
+})
 
 
 
@@ -117,5 +137,6 @@ module.exports = {
     Product , Difficulty , Category, Designer , Mechanic, Image,
     Employee, Role,
     Customer,
-    CartItem
+    CartItem,
+    Order , Status
 };

@@ -145,8 +145,11 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
     productForm.handle(req, {
         'success': async (form) => {
 
-            const product = addNewProduct(form.data)
-            
+            const product = await addNewProduct(form.data)
+
+            console.log(product)
+
+
             req.flash("success_messages", `New Product <${form.data.name}> has been created`)
 
             res.redirect('/products');

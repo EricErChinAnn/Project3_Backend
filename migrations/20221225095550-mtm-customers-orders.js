@@ -55,6 +55,11 @@ exports.up = function (db) {
         type:"int",
         unsigned:true,
         notNull:true
+      },
+      product_id:{
+        type:"int",
+        unsigned:true,
+        notNull:true
       }
   });
 };

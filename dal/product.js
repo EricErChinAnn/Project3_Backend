@@ -107,6 +107,8 @@ async function addNewProduct(formData){
     if (formData.mechanics) {
         await product.mechanics().attach(formData.mechanics.split(","));
     }
+    console.log("-------------------")
+    console.log(formData.mechanics.split(","))
 
 
     

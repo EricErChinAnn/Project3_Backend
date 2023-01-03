@@ -43,11 +43,6 @@ exports.up = function(db) {
       notNull: true,
       length: "70"
     },
-    remark :{
-      type: 'string',
-      notNull: true,
-      length: "155"
-    },
     order_date:{
       type:"date",
       notNull:true,
