@@ -15,19 +15,16 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.addForeignKey('statuses', 'orders', 'status_order_fk',
-       {
-        "order_id":"id"
-      },
-       {
-            onDelete: 'CASCADE',
-            onUpdate: 'RESTRICT'
-       })
+  db.insert("statuses", ['status'], ['Paid']);
+  db.insert("statuses", ['status'], ['Shipping']);
+  db.insert("statuses", ['status'], ['Delivered']);
+  db.insert("statuses", ['status'], ['Completed']);
+
+  return null;
 };
 
 exports.down = function(db) {
-  db.removeForeignKey("statuses", 'status_order_fk');
-
+  return null;
 };
 
 exports._meta = {

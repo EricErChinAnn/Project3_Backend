@@ -182,47 +182,24 @@ router.post('/process_payment', express.raw({ type: 'application/json' }), async
         newOrder.set("shipping_cost", stripeSession.total_details.amount_shipping)
         newOrder.set("receipt_url", receiptURL)
         newOrder.set("payment_type", paymentType.payment_method_types[0])
+        newOrder.set("status_id", 1 )
+
 
         const saveNewOrder = await newOrder.save();
+        // console.log(saveNewOrder)
 
         let allProductOrderQuantity = JSON.parse(stripeSession.metadata.orders);
             // console.log(allProductOrderQuantity)
 
         for(let e of allProductOrderQuantity){
-
-            console.log(e)
-            console.log("popopopopopopopo")
-            
             const customerOrder = await newOrder.customers().attach(e)
-        
-            // customerOrder.set("customer_id", e.customer_id);
-            // customerOrder.set("order_id", saveNewOrder.id)
-            // customerOrder.set("quantity", e.quantity)
-            // customerOrder.set("product_id", e.product_id)
+
         }
-
-        // const customerOrder = newOrder.customer()
-        
-        // customerOrder.set("customer_id",);
-        // customerOrder.set("order_id", saveNewOrder.id)
-        // customerOrder.set("quantity",)
-
-
-
-        //Create new status
-        // const newOrderStatus = new Status();
-
-        // newOrderStatus.set('order_id', saveNewOrder.id);
-        // newOrderStatus.set('status', "Paid");
-
-        // await newOrderStatus.save();
-
         
 
 
     }
     res.sendStatus(200);
-    // res.send({ received: true });
 })
 
 

@@ -118,7 +118,7 @@ const Order = bookshelf.model("Order",{
         return this.belongsToMany('Customer')
     },
     statuses(){
-        return this.hasMany("Status")
+        return this.belongsTo("Status")
     }
 
 })
@@ -126,7 +126,7 @@ const Order = bookshelf.model("Order",{
 const Status = bookshelf.model("Status",{
     tableName:"statuses",
     orders(){
-        return this.belongsTo("Order")
+        return this.hasMany("Order")
     }
 })
 

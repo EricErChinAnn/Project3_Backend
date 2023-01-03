@@ -43,7 +43,7 @@ exports.up = function (db) {
           unsigned: true,
           foreignKey: {
               name: 'customers_orders_order_fk',
-              table: 'products',
+              table: 'orders',
               rules: {
                   onDelete: 'CASCADE',
                   onUpdate: 'RESTRICT'
