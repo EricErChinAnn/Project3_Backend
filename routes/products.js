@@ -9,23 +9,11 @@ const { bootstrapField } = require("../forms/index")
 const {
     replaceMTM,
     FullProductForm,
-    FullSearchForm
+    FullSearchForm,
+    addNewProduct
 } = require("../dal/product")
 
 // Get all products
-
-// router.get('/', async (req,res)=>{
-
-//     let products = await Product.collection().fetch({
-//         withRelated:['difficulty',"origin","categories","designers","mechanics"]
-//     });
-//     console.log(products.toJSON())
-
-//     res.render('products/', {
-//         'products': products.toJSON()
-//     })
-
-// })
 
 router.get('/', async (req, res) => {
 
@@ -157,61 +145,9 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
     productForm.handle(req, {
         'success': async (form) => {
 
-            const product = new Product();
-
-            product.set('name', form.data.name);
-            product.set('cost', form.data.cost);
-            product.set('player_min', form.data.player_min);
-            product.set('player_max', form.data.player_max);
-            product.set('avg_duration', form.data.avg_duration);
-            product.set('release_date', form.data.release_date);
-            product.set('description', form.data.description);
-            product.set('stock', form.data.stock);
-            product.set('min_age', form.data.min_age);
-            product.set('difficulty_id', form.data.difficulty_id);
-            if (form.data.expansion_id) {
-                product.set('expansion_id', form.data.expansion_id);
-            }
-            const savedProduct = await product.save();
-            // let productData = {categories,designers,mechanics, ...form.data}
-            // const product = new Product(productData);
-
-            if (form.data.categories) {
-                await product.categories().attach(form.data.categories.split(","));
-                // console.log(form.data.categories.split(","))
-            }
-            if (form.data.designers) {
-                await product.designers().attach(form.data.designers.split(","));
-            }
-            if (form.data.mechanics) {
-                await product.mechanics().attach(form.data.mechanics.split(","));
-            }
-
-
+            const product = addNewProduct(form.data)
             
-            let imageArray = form.data.image_url.split(" ")
-            let imageThumbArray = form.data.image_url_thumb.split(" ")
-
-            for (let i = 0; i < imageArray.length; i++){
-                if(imageArray[i]){
-                    const image = new Image();
-
-                    image.set('product_id', savedProduct.id);
-                    image.set('image_url', imageArray[i]);
-                    image.set('image_url_thumb', imageThumbArray[i]);
-    
-                    await image.save();
-                }
-            }
-
-            
-            
-
-
-
-
-
-            req.flash("success_messages", `New Product <${product.get('name')}> has been created`)
+            req.flash("success_messages", `New Product <${form.data.name}> has been created`)
 
             res.redirect('/products');
 

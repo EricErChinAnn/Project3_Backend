@@ -1,5 +1,15 @@
-const {Product , Difficulty, Category, Designer , Mechanic } = require('../models')
+const {Product , Difficulty, Category, Designer , Mechanic , Image } = require('../models')
 const {createProductForm, searchProductForm } = require("../forms/index")
+
+
+async function getAllProductsWithRelated(){
+    let allProducts = await Product.fetchAll({
+        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
+    })
+    return allProducts
+}
+
+
 
 async function getAllDifficulties(){
     const allDifficulties = await Difficulty.fetchAll().map((e) => {
@@ -68,9 +78,63 @@ async function FullSearchForm(){
 }
 
 
+async function addNewProduct(formData){
+
+    const product = new Product();
+
+    product.set('name', formData.name);
+    product.set('cost', formData.cost);
+    product.set('player_min', formData.player_min);
+    product.set('player_max',formData.player_max);
+    product.set('avg_duration', formData.avg_duration);
+    product.set('release_date', formData.release_date);
+    product.set('description', formData.description);
+    product.set('stock', formData.stock);
+    product.set('min_age', formData.min_age);
+    product.set('difficulty_id', formData.difficulty_id);
+    
+    if (formData.expansion_id) {
+        product.set('expansion_id', formData.expansion_id);
+    }
+    const savedProduct = await product.save();
+
+    if (formData.categories) {
+        await product.categories().attach(formData.categories.split(","));
+    }
+    if (formData.designers) {
+        await product.designers().attach(formData.designers.split(","));
+    }
+    if (formData.mechanics) {
+        await product.mechanics().attach(formData.mechanics.split(","));
+    }
+
+
+    
+    let imageArray = formData.image_url.split(" ")
+    let imageThumbArray = formData.image_url_thumb.split(" ")
+
+    for (let i = 0; i < imageArray.length; i++){
+        if(imageArray[i]){
+            const image = new Image();
+
+            image.set('product_id', savedProduct.id);
+            image.set('image_url', imageArray[i]);
+            image.set('image_url_thumb', imageThumbArray[i]);
+
+            await image.save();
+        }
+    }
+
+    
+    
+    return product;
+
+}
+
 
 
 module.exports = {
+    getAllProductsWithRelated,
     getAllDifficulties, 
     getAllExpansion, 
     getAllCategories, 
@@ -78,7 +142,8 @@ module.exports = {
     getAllMechanics,
     replaceMTM,
     FullProductForm,
-    FullSearchForm
+    FullSearchForm,
+    addNewProduct
 }
 
 
