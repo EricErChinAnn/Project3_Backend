@@ -421,7 +421,40 @@ const createLogin = ()=>{
 }
 
 
+
+//orders
+const searchOrderForm = ( statuses )=>{
+    return forms.create({
+        'id': fields.number({
+            label:"Order Id",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            validators: [validators.integer()]
+        }),
+        'customers_email': fields.string({
+            label:"Customer Email",
+            required: false,
+            errorAfterField: true,
+            cssClasses: {
+                label: ['form-label']
+            },
+            'validators': [validators.integer()]
+        }),
+        'status_id': fields.string({
+            label: "Status",
+            required: false,
+            errorAfterField: true,
+            widget:widgets.select(),
+            choices: statuses
+        })
+    })
+}
+
 module.exports = { 
     bootstrapField, createProductForm, searchProductForm,
     createEmployeeForm, createCustomerForm, createLogin,
+    searchOrderForm,
  };

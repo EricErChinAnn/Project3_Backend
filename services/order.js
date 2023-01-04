@@ -13,15 +13,17 @@ class OrderServices {
         return await orderDataLayer.getAllOrder();
     }
 
-    async getAllOrderById(orderId){
+    async getAllOrderById(orderId) {
         return await orderDataLayer.getAllOrderById(orderId)
     }
 
-    async getAllStatuses(){
+    async getAllStatuses() {
         return await orderDataLayer.getAllStatuses()
     }
 
-
+    async orderSearchForm() {
+        return await orderDataLayer.orderSearchForm()
+    }
 
 }
 

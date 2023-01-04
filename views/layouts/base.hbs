@@ -34,13 +34,16 @@
           <li class="nav-item">
             <a class="nav-link" href="/customers">All Customers</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/orders">All Orders</a>
+          </li>
         </ul>
       </div>
         {{#if customer}}
         <div class="d-flex justify-content-center align-items-center me-5">
           <a style="position: absolute;" href="/cart" ><h1><i class="bi bi-basket3-fill"></i></h1></a>
           {{#if cartItemCount}}
-          <h3 style="position: absolute;color:white; text-shadow: 2px 2px #070707;">{{cartItemCount}}</h3>
+          <h4 style="position: absolute; color:white; text-shadow: 2px 2px #070707;">{{cartItemCount}}</h4>
           {{/if}}
         </div>
         {{/if}}

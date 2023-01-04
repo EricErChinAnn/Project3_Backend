@@ -1,5 +1,5 @@
-const { Order, Status } = require("../models/index")
-const { updateOrderForm } = require("../forms/index")
+const { Order, Status, } = require("../models/index")
+const { searchOrderForm } = require("../forms/index")
 
 async function getAllStatuses() {
     return await Status.fetchAll({
@@ -30,7 +30,7 @@ const getAllOrderById = async (orderId) => {
 
 async function updateStatus(orderId, newStatusId) {
     try{
-        let orderItem = await getAllOrderById();
+        let orderItem = await getAllOrderById(orderId);
         if (orderItem) {
             orderItem.set('status_id', newStatusId);
             orderItem.save();
@@ -44,9 +44,21 @@ async function updateStatus(orderId, newStatusId) {
    
 }
 
+async function orderSearchForm() {
+
+    const allStatuses = await (await Status.fetchAll()).map((e)=>{
+        return [e.get('id'), e.get('status')];
+    })
+
+   allStatuses.unshift(["","All Statuses"]);
+
+   return searchOrderForm(allStatuses)
+}
+
 module.exports = {
     getAllStatuses,
     getAllOrder,
     getAllOrderById,
-    updateStatus
+    updateStatus,
+    orderSearchForm
 }

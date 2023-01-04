@@ -1,6 +1,26 @@
 {{#extends 'base'}}
 
 {{#block 'content'}}
+
+<button class="btn btn-primary btn-sm" type="button" data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">Filter Results</button>
+
+<div class="offcanvas offcanvas-start text-bg-dark" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Search/Filter Results</h5>
+        <button type="button" class="btn-close-white " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form method="GET">
+            {{{form}}}
+            <input type="submit" class="mb-3 mt-3 btn btn-primary" value="Search" />
+        </form>
+    </div>
+</div>
+<a href="/orders" class="btn btn-primary btn-sm">Reset Filter</a>
+
+
 <table class="table mt-2">
     <thead>
         <tr>
@@ -14,8 +34,6 @@
             <th>Delivery Method</th>
             <th>View Receipt</th>
             <th>Statuses</th>
-
-            <th>Edit</th>
         </tr>
 
     </thead>
@@ -64,13 +82,10 @@
                 <a href={{this.receipt_url}}><i class="bi bi-receipt"></i></a>
             </td>
             <td>
-                {{this.statuses.status}}
-                {{this.statuses.id}}
                 <form method="POST" action="/orders/{{this.id}}/status/update">
-                    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                    <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
                     <select class="form-select" id="newStatus" name="newStatus" aria-label="Default select example">
                         {{#each ../statuses}}
-
 
                         {{#compare ../this.statuses.id "==" this.id}}
                         <option value={{this.id}} selected>{{this.status}}</option>
@@ -82,11 +97,6 @@
                     </select>
                     <input type="submit" value="Update Status" class="btn btn-primary" />
                 </form>
-            </td>
-            <td>
-                <div class="d-flex flex-column">
-                    <a href="#" class="btn btn-primary btn-sm mb-2">Update</a>
-                </div>
             </td>
         </tr>
         {{/each}}
