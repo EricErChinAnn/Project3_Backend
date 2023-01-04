@@ -28,6 +28,14 @@ hbs.handlebars.registerHelper("totalCartCost", function(shoppingCart){
     return "$" + ((total)/100).toFixed(2)
 })
 
+hbs.handlebars.registerHelper("shippingType", function(shippinCost){
+    if(shippinCost === 500){
+        return "Standard Delivery"
+    } else {
+        return "Express Delivery"
+    }
+})
+
 let app = express()
 
 app.set("view engine","hbs");
@@ -111,6 +119,7 @@ const customersRoutes = require("./routes/customers")
 const cloudinaryRoutes = require("./routes/cloudinary")
 const cartRoutes = require("./routes/shoppingCart")
 const checkoutRoutes = require("./routes/checkout")
+const ordersRoutes = require("./routes/orders")
 
 const api = {
     products:require("./routes/api/product"),
@@ -125,6 +134,8 @@ async function main(){
     app.use('/cloudinary', cloudinaryRoutes)
     app.use("/cart",cartRoutes)
     app.use("/checkout",checkoutRoutes)
+    app.use("/orders", ordersRoutes)
+
     app.use('/api/products', express.json(), api.products);
 }
 

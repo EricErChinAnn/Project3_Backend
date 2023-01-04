@@ -203,11 +203,6 @@ router.post('/process_payment', express.raw({ type: 'application/json' }), async
 })
 
 
-
-
-
-
-
 router.get('/success', function (req, res) {
     res.render('checkout/success')
 })

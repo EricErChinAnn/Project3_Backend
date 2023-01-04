@@ -421,9 +421,7 @@ const createLogin = ()=>{
 }
 
 
-
-
 module.exports = { 
     bootstrapField, createProductForm, searchProductForm,
-    createEmployeeForm, createCustomerForm, createLogin
+    createEmployeeForm, createCustomerForm, createLogin,
  };

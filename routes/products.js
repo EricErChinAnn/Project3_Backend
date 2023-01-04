@@ -147,7 +147,7 @@ router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
             const product = await addNewProduct(form.data)
 
-            console.log(product)
+            // console.log(product)
 
 
             req.flash("success_messages", `New Product <${form.data.name}> has been created`)

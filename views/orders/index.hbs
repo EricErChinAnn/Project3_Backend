@@ -1,0 +1,97 @@
+{{#extends 'base'}}
+
+{{#block 'content'}}
+<table class="table mt-2">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Customer Username/Email</th>
+            <th>Country</th>
+            <th>Address</th>
+            <th>Postal Code</th>
+            <th>Payment Type</th>
+            <th>Order Date</th>
+            <th>Delivery Method</th>
+            <th>View Receipt</th>
+            <th>Statuses</th>
+
+            <th>Edit</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        {{#each orders}}
+        <tr>
+            <td>
+                {{this.id}}
+            </td>
+            <td>
+                <div class="d-flex flex-column">
+                    {{#each this.customers}}
+                    <span>
+                        {{this.username}}
+                    </span>
+                    <span>
+                        {{this.email}}
+                    </span>
+                    {{/each}}
+                </div>
+            </td>
+            <td>
+                {{this.country}}
+            </td>
+            <td>
+                <div class="d-flex flex-column">
+                    <span>{{this.address_line_1}}</span>
+                    <span>{{this.address_line_2}}</span>
+                </div>
+            </td>
+            <td>
+                {{this.postal_code}}
+            </td>
+            <td>
+                {{this.payment_type}}
+            </td>
+            <td>
+                {{#dateDisplay this.order_date}}
+                {{/dateDisplay}}
+            </td>
+            <td>
+                {{#shippingType this.shipping_cost}}
+                {{/shippingType}}
+            </td>
+            <td>
+                <a href={{this.receipt_url}}><i class="bi bi-receipt"></i></a>
+            </td>
+            <td>
+                {{this.statuses.status}}
+                {{this.statuses.id}}
+                <form method="POST" action="/orders/{{this.id}}/status/update">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                    <select class="form-select" id="newStatus" name="newStatus" aria-label="Default select example">
+                        {{#each ../statuses}}
+
+
+                        {{#compare ../this.statuses.id "==" this.id}}
+                        <option value={{this.id}} selected>{{this.status}}</option>
+                        {{else}}
+                        <option value={{this.id}}>{{this.status}}</option>
+                        {{/compare}}
+
+                        {{/each}}
+                    </select>
+                    <input type="submit" value="Update Status" class="btn btn-primary" />
+                </form>
+            </td>
+            <td>
+                <div class="d-flex flex-column">
+                    <a href="#" class="btn btn-primary btn-sm mb-2">Update</a>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{/block}}
+
+{{/extends}}
