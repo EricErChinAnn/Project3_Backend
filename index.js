@@ -77,7 +77,7 @@ app.use(function (req, res, next) {
 const csurfInstance = csrf();
 
 app.use(function(req,res,next){
-    console.log("checking for csrf exclusion")
+    // console.log("checking for csrf exclusion")
     // exclude whatever url we want from CSRF protection
     if (req.url === "/checkout/process_payment" || req.url.slice(0,5)=="/api/") {
       return next();
@@ -122,7 +122,8 @@ const checkoutRoutes = require("./routes/checkout")
 const ordersRoutes = require("./routes/orders")
 
 const api = {
-    products:require("./routes/api/product"),
+    products:require("./routes/api/products"),
+    customers:require("./routes/api/customers"),
 }
 
 async function main(){
@@ -137,6 +138,7 @@ async function main(){
     app.use("/orders", ordersRoutes)
 
     app.use('/api/products', express.json(), api.products);
+    app.use('/api/customers', express.json(), api.customers);
 }
 
 main();

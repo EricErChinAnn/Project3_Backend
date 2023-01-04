@@ -35,3 +35,4 @@ FLUSH PRIVILEGES;
 * cloudinary 
 * stripe
 * bootstrap-icons
+* jsonwebtoken
