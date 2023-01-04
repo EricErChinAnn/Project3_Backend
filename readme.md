@@ -36,3 +36,4 @@ FLUSH PRIVILEGES;
 * stripe
 * bootstrap-icons
 * jsonwebtoken
+* cors

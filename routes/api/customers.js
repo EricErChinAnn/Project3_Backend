@@ -3,22 +3,7 @@ const router = express.Router();
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { checkIfAuthenticatedJWT } = require('../../middlewares')
-
-const generateAccessToken = (customer) => {
-    return jwt.sign({
-        'username': customer.get('username'),
-        'id': customer.get('id'),
-        'email': customer.get('email'),
-        "dob":customer.get('dob'),
-        "contact":customer.get('contact'),
-        "postal_code":customer.get('postal_code'),
-        "address_line_1":customer.get('address_line_1'),
-        "address_line_2":customer.get('address_line_2'),
-        "country":customer.get('country'),
-    }, process.env.TOKEN_SECRET, {
-        expiresIn: "1h"
-    });
-}
+const { generateAccessToken } = require("../../dal/employee")
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
@@ -26,7 +11,7 @@ const getHashedPassword = (password) => {
     return hash;
 }
 
-const { Customer } = require("../../models");
+const { Customer, BlacklistedToken } = require("../../models");
 
 router.post('/login', async (req, res) => {
 
@@ -38,6 +23,8 @@ router.post('/login', async (req, res) => {
             require: false
         });
 
+        customer = customer.toJSON()
+
         if (!customer) {
 
             res.send({
@@ -46,11 +33,15 @@ router.post('/login', async (req, res) => {
 
         } else {
 
-            if (customer.get('password') === getHashedPassword(req.body.password)) {
+            if (customer.password === getHashedPassword(req.body.password)) {
 
-                let accessToken = generateAccessToken(customer);
+                let accessToken = generateAccessToken(customer, process.env.TOKEN_SECRET, '15m');
+                let refreshToken = generateAccessToken(customer, process.env.REFRESH_TOKEN_SECRET, '2h');
+
+
+                // let accessToken = generateAccessToken(customer);
                 res.send({
-                    accessToken
+                    accessToken, refreshToken
                 })
 
             } else {
@@ -77,6 +68,91 @@ router.get('/profile', checkIfAuthenticatedJWT, async (req, res) => {
 
     const customer = req.customer;
     res.send(customer);
+
+})
+
+
+router.post('/refresh', async (req, res) => {
+
+    let refreshToken = req.body.refreshToken;
+
+    if (!refreshToken) {
+        res.status(401);
+        res.json({
+            'error': 'No refresh token found'
+        })
+        return;
+    } else {
+
+        let blacklistedToken = await BlacklistedToken.where({
+            'token': refreshToken
+        }).fetch({
+            require: false
+        })
+
+        if (blacklistedToken) {
+            res.status(401);
+            res.json({
+                'error': 'The refresh token has already expired'
+            })
+            return 
+        }
+
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, customer) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+    
+            let accessToken = generateAccessToken(customer, process.env.TOKEN_SECRET, '15m');
+            res.send({
+                'accessToken': accessToken
+            });
+        })
+
+    }
+})
+
+
+router.post('/logout', async (req, res) => {
+
+    let refreshToken = req.body.refreshToken;
+
+    if (!refreshToken) {
+        res.sendStatus(401);
+    } else {
+
+        let blacklistedToken = await BlacklistedToken.where({
+            'token': refreshToken
+        }).fetch({
+            require: false
+        })
+
+        if (blacklistedToken) {
+            res.status(401);
+            res.json({
+                'error': 'The refresh token has already expired'
+            })
+            return 
+        }
+
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, customer) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+
+            const token = new BlacklistedToken();
+
+            token.set('token', refreshToken);
+            token.set('date_created', new Date()); // use current date
+            await token.save();
+
+            res.send({
+                'message': 'logged out'
+            })
+
+        })
+
+    }
 
 })
 

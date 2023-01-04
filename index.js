@@ -6,6 +6,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const FileStore = require('session-file-store')(session);
 const csrf = require('csurf')
+const cors = require('cors')
+
 const { getCart } = require("./dal/cart");
 
 
@@ -52,6 +54,9 @@ app.use(
         extended:false
     })
 );
+
+//Need to be before sessions
+app.use(cors());
 
 app.use(session({
     store: new FileStore(),
