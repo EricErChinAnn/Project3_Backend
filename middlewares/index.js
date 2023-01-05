@@ -12,8 +12,6 @@ const checkIfAuthenticatedEmployee = (req, res, next) => {
     }
 }
 
-
-
 const checkIfAuthenticatedJWT = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
@@ -39,7 +37,37 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
 
 
 
+
+
+const validateSearch = (payload) => async (req, res, next)=>{
+
+    const query = req.query
+
+    // console.log(Object.keys(query).length)
+
+    if(Object.keys(query).length > 0){
+
+        try {
+        
+            await payload.validate(query);
+            return next()
+    
+        } catch (error) {
+    
+            return res.status(400).json({error})
+    
+        }
+
+    } else {
+
+        return next()
+
+    }
+
+}
+
 module.exports = {
     checkIfAuthenticatedEmployee,
     checkIfAuthenticatedJWT,
+    validateSearch,
 }

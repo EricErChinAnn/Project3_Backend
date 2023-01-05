@@ -37,3 +37,4 @@ FLUSH PRIVILEGES;
 * bootstrap-icons
 * jsonwebtoken
 * cors
+* yup (Validator)

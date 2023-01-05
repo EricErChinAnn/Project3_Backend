@@ -67,7 +67,7 @@ router.get('/', async (req, res) => {
             }
 
             if (form.data.player_min) {
-                products.where('player_min', '>=', form.data.player_min)
+                products.where('player_min', '<=', form.data.player_min)
             }
 
             if (form.data.player_max) {
