@@ -23,12 +23,12 @@ const generateAccessToken = (customer, secret, expiresIn) => {
         'username': customer.username,
         'id': customer.id,
         'email': customer.email,
-        "dob":customer.dob,
-        "contact":customer.contact,
-        "postal_code":customer.postal_code,
-        "address_line_1":customer.address_line_1,
-        "address_line_2":customer.address_line_2,
-        "country":customer.country,
+        // "dob":customer.dob,
+        // "contact":customer.contact,
+        // "postal_code":customer.postal_code,
+        // "address_line_1":customer.address_line_1,
+        // "address_line_2":customer.address_line_2,
+        // "country":customer.country,
     }, secret, {
         'expiresIn': expiresIn
     });

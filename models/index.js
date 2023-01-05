@@ -92,7 +92,7 @@ const Customer = bookshelf.model("Customer",{
     tableName:"customers",
     orders(){
         return this.belongsToMany('Order')
-    }
+    },
 })
 
 //blacklisted tokens

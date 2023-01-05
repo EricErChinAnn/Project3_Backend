@@ -12,7 +12,11 @@ const getHashedPassword = (password) => {
 }
 
 const { Customer, BlacklistedToken } = require("../../models");
+const { validateRegister } = require("../../middlewares")
+const { registerSchema } = require("../../validations/customerRegister")
 
+
+//Login Customer
 router.post('/login', async (req, res) => {
 
     if (req.body.email) {
@@ -20,10 +24,10 @@ router.post('/login', async (req, res) => {
         let customer = await Customer.where({
             'email': req.body.email
         }).fetch({
-            require: false
+            require: false,
+            withRelated: ['orders']
         });
 
-        customer = customer.toJSON()
 
         if (!customer) {
 
@@ -32,6 +36,8 @@ router.post('/login', async (req, res) => {
             })
 
         } else {
+
+            customer = customer.toJSON()
 
             if (customer.password === getHashedPassword(req.body.password)) {
 
@@ -63,16 +69,19 @@ router.post('/login', async (req, res) => {
 
 })
 
-
+//View Customer Profile
 router.get('/profile', checkIfAuthenticatedJWT, async (req, res) => {
 
+    // console.log (req.customer)
+
     const customer = req.customer;
+
     res.send(customer);
 
 })
 
-
-router.post('/refresh', async (req, res) => {
+//Refresh accessToken
+router.post('/refresh', checkIfAuthenticatedJWT, async (req, res) => {
 
     let refreshToken = req.body.refreshToken;
 
@@ -95,14 +104,14 @@ router.post('/refresh', async (req, res) => {
             res.json({
                 'error': 'The refresh token has already expired'
             })
-            return 
+            return
         }
 
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, customer) => {
             if (err) {
                 return res.sendStatus(403);
             }
-    
+
             let accessToken = generateAccessToken(customer, process.env.TOKEN_SECRET, '15m');
             res.send({
                 'accessToken': accessToken
@@ -112,10 +121,12 @@ router.post('/refresh', async (req, res) => {
     }
 })
 
-
-router.post('/logout', async (req, res) => {
+//Logout Customer
+router.post('/logout', checkIfAuthenticatedJWT, async (req, res) => {
 
     let refreshToken = req.body.refreshToken;
+
+    console.log(refreshToken)
 
     if (!refreshToken) {
         res.sendStatus(401);
@@ -132,7 +143,7 @@ router.post('/logout', async (req, res) => {
             res.json({
                 'error': 'The refresh token has already expired'
             })
-            return 
+            return
         }
 
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, customer) => {
@@ -156,7 +167,55 @@ router.post('/logout', async (req, res) => {
 
 })
 
+//Register Customer
+router.post("/register", validateRegister(registerSchema), async (req, res) => {
 
+    let message = {}
+
+    if (req.body.password === req.body.password_confirm) {
+
+        let newCustomerData = {
+            'username': req.body.username,
+            'email': req.body.email,
+            "password": getHashedPassword(req.body.password),
+            "dob": req.body.dob,
+            "contact": req.body.contact,
+            "postal_code": req.body.postal_code,
+            "address_line_1": req.body.address_line_1,
+            "address_line_2": req.body.address_line_2,
+            "country": req.body.country,
+        }
+
+        const newCustomer = new Customer(newCustomerData)
+
+        await newCustomer.save();
+        message.message = "Account created"
+        message.customer = newCustomer
+        res.status(200)
+        res.json(message)
+
+    } else {
+
+        message.error = "Password does not match"
+
+        // console.log(result)
+        res.status(400)
+        res.json(message)
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+})
 
 
 
