@@ -24,11 +24,6 @@
             <td>
                 {{this.product.name}}
             </td>
-             <td>
-                {{#each this.product.mechanics}}
-                <span class="badge bg-danger">{{this.mechanic}}</span>
-                {{/each}}
-            </td>
             <td>
                 {{#if this.product.images}}
 
@@ -64,6 +59,11 @@
             </td>
             <td>
                 <span class="badge bg-warning">{{this.product.origin.name}}</span>
+            </td>
+            <td>
+                {{#each this.product.mechanics}}
+                <span class="badge bg-danger">{{this.mechanic}}</span>
+                {{/each}}
             </td>
             <td>
                 {{#each this.product.categories}}

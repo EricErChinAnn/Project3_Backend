@@ -206,15 +206,6 @@ router.post("/register", validateRegister(registerSchema), async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
 })
 
 
