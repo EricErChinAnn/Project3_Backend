@@ -110,4 +110,19 @@ for (let each of allOrder) {
     }
 }
 
-console.log(orders)
+
+let result = allOrder.filter((obj) => {
+
+    let objViaCustId = obj.customers.filter(e=>e.id === 1)
+    
+    if(objViaCustId.length > 0){
+        return true
+    } else {
+        return false
+    }
+     
+})
+
+
+console.log(result)
+// console.log(orders)

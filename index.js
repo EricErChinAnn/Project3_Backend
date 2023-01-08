@@ -156,6 +156,6 @@ async function main(){
 
 main();
 
-app.listen(3000,()=>{
+app.listen(6000,()=>{
     console.log("Server is LIVE")
 })
