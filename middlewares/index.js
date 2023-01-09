@@ -20,15 +20,22 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
 
-    // console.log(authHeader)
-
     if (authHeader) {
-        const token = authHeader.split(' ')[1];
+
+        let token = null
+        let authHeadChecker = [...authHeader]
+
+        if(authHeadChecker.includes(" ")){
+            token = authHeader.split(' ')[1];
+            
+        } else { token = authHeader }
+
+        // console.log(token)
 
         jwt.verify(token, process.env.TOKEN_SECRET, (err, customer) => {
 
             if (err) {
-                return res.sendStatus(403);
+                return res.status(403).json({"error":err});
             }
 
             // customer.accessToken = req.headers.authorization.split(" ")[1]
@@ -38,6 +45,7 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
         });
     } else {
 
+        // console.log("error-401")
         res.sendStatus(401);
 
     }

@@ -43,11 +43,13 @@ router.post('/login', async (req, res) => {
 
                 let accessToken = generateAccessToken(customer, process.env.TOKEN_SECRET, '15m');
                 let refreshToken = generateAccessToken(customer, process.env.REFRESH_TOKEN_SECRET, '2h');
-
+                let customerName = customer.username;
+                
+                console.log(customer)
 
                 // let accessToken = generateAccessToken(customer);
                 res.send({
-                    accessToken, refreshToken
+                    accessToken, refreshToken, customerName
                 })
 
             } else {
