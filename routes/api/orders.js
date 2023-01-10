@@ -40,7 +40,7 @@ router.get("/", checkIfAuthenticatedJWT, async (req, res) => {
         res.status(200)
         res.json({ "error": "No Orders Found" })
     } else {
-        console.log(ordersOfCustomer)
+        // console.log(ordersOfCustomer)
         res.status(200)
         res.json(ordersOfCustomer)
     }

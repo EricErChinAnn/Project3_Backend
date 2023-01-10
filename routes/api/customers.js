@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
                 let refreshToken = generateAccessToken(customer, process.env.REFRESH_TOKEN_SECRET, '2h');
                 let customerName = customer.username;
                 
-                console.log(customer)
+                // console.log(customer)
 
                 // let accessToken = generateAccessToken(customer);
                 res.send({
@@ -128,7 +128,7 @@ router.post('/logout', checkIfAuthenticatedJWT, async (req, res) => {
 
     let refreshToken = req.body.refreshToken;
 
-    console.log(refreshToken)
+    // console.log(refreshToken)
 
     if (!refreshToken) {
         res.sendStatus(401);

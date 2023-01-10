@@ -11,7 +11,7 @@ router.get('/', validateSearch(searchSchema) ,async (req, res) => {
 
     const allProducts = Product.collection()
 
-    console.log(req.query)
+    // console.log(req.query)
 
     if (req.query.name) {
         allProducts.where("name", "like", `%${req.query.name}%`)
