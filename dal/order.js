@@ -38,7 +38,8 @@ async function updateStatus(orderId, newStatusId) {
         }
         return false;
     }catch(e){
-        console.log(e)
+
+        // console.log(e)
         return false;
     }
    

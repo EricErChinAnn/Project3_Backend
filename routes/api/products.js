@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const { Product } = require('../../models/index')
+const { Product, Difficulty, Category, Designer , Mechanic } = require('../../models/index')
 
 const {validateSearch} = require("../../middlewares")
 const { searchSchema } = require("../../validations/productSearch")
@@ -10,6 +10,8 @@ const { searchSchema } = require("../../validations/productSearch")
 router.get('/', validateSearch(searchSchema) ,async (req, res) => {
 
     const allProducts = Product.collection()
+
+    console.log(req.query)
 
     if (req.query.name) {
         allProducts.where("name", "like", `%${req.query.name}%`)
@@ -24,7 +26,7 @@ router.get('/', validateSearch(searchSchema) ,async (req, res) => {
     }
 
     if (req.query.player_min) {
-        allProducts.where('player_min', '<=', req.query.player_min)
+        allProducts.where('player_min', '>=', req.query.player_min)
     }
 
     if (req.query.player_max) {
@@ -73,14 +75,14 @@ router.get('/', validateSearch(searchSchema) ,async (req, res) => {
         message.results = productsResults
     }
 
-    console.log(productsResults.toJSON())
+    // console.log(productsResults.toJSON())
     res.status(200)
     res.json(message)
 })
 
 
 //get product via ID
-router.get('/:product_id', async (req, res) => {
+router.get('/:product_id/id', async (req, res) => {
     const productViaID = Product.collection()
 
     let result = await productViaID.where( "id", "=", req.params.product_id ).fetch({
@@ -99,6 +101,26 @@ router.get('/:product_id', async (req, res) => {
     // console.log(result)
     res.status(200)
     res.json(message)
+})
+
+router.get('/tables', async (req, res) => {
+
+    const difficulties = await Difficulty.fetchAll()
+    const categories = await Category.fetchAll()
+    const designers = await Designer.fetchAll()
+    const mechanics = await Mechanic.fetchAll()
+
+    let extend = {
+        "difficulty":difficulties,
+        "categories":categories,
+        "designers":designers,
+        "mechanics":mechanics,
+    }
+
+    // console.log(extend)dsdaasd
+
+    res.status(200)
+    res.json(extend)
 })
 
 module.exports = router;
