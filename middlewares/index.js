@@ -45,7 +45,7 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
         });
     } else {
 
-        // console.log("error-401")
+        // console.log("error-401")s
         res.sendStatus(401);
 
     }

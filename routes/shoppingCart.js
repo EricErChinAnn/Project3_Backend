@@ -6,7 +6,7 @@ const CartServices = require('../services/cart_services');
 
 router.get('/', async(req,res)=>{
 
-if(req.session.customer.id){
+if(req.session.customer?.id){
 
     let cart = new CartServices(req.session.customer.id);
     // let cart = new CartServices(2);
@@ -32,7 +32,7 @@ if(req.session.customer.id){
 
 router.get('/:product_id/add', async (req,res)=>{
 
-    if(req.session.customer.id){
+    if(req.session.customer?.id){
 
     let cart = new CartServices(req.session.customer.id);
 
@@ -53,7 +53,7 @@ router.get('/:product_id/add', async (req,res)=>{
 
 
 router.get('/:product_id/remove', async(req,res)=>{
-if(req.session.customer.id){
+if(req.session.customer?.id){
 
     let cart = new CartServices(req.session.customer.id);
     req.flash("success_messages", `Item has been removed`);
@@ -75,7 +75,7 @@ if(req.session.customer.id){
 
 router.post('/:product_id/quantity/update', async(req,res)=>{
 
-    if(req.session.customer.id){
+    if(req.session.customer?.id){
 
     let cart = new CartServices(req.session.customer.id);
     await cart.setQuantity(req.params.product_id, req.body.newQuantity);
