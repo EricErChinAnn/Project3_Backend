@@ -274,11 +274,11 @@ router.get('/frontend', checkIfAuthenticatedJWT, async (req, res) => {
     // step 3: create the session
     let stripeSession = await Stripe.checkout.sessions.create(payment)
 
-    // console.log( stripeSession.url)
-    res.send(stripeSession.url)
 
-    
-
+    res.json({
+        'sessionId': stripeSession.id,
+        'publishableKey': process.env.STRIPE_PUBLISHABLE_KEY
+    })
 
 })
 
