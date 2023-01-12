@@ -22,7 +22,7 @@ router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
         message.results = customerCart
     }
 
-    console.log(customerCart.toJSON())
+    // console.log(customerCart.toJSON())
     res.status(200)
     res.json(message)
 
@@ -71,7 +71,7 @@ router.post('/:product_id/add', checkIfAuthenticatedJWT, async (req, res) => {
 })
 
 
-// //Remvoe 1 item from cart
+// //Remove 1 item from cart
 router.delete('/:product_id/remove', checkIfAuthenticatedJWT, async (req, res) => {
 
     let cart = new CartServices(req.customer.id);
@@ -111,6 +111,9 @@ router.put('/:product_id/quantity/update', checkIfAuthenticatedJWT, async (req, 
 
     let cart = new CartServices(req.customer.id);
     let message = {}
+
+
+    // console.log(req)
 
     let newQuantity = parseInt(req.body.newQuantity)
 
