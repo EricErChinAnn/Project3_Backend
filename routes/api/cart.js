@@ -8,6 +8,7 @@ const { Product, CartItem } = require("../../models");
 
 //Get customers cart
 router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
+    console.log("route called")
 
     let cart = new CartServices(req.customer.id);
 
@@ -22,7 +23,6 @@ router.get('/', checkIfAuthenticatedJWT, async (req, res) => {
         message.results = customerCart
     }
 
-    // console.log(customerCart.toJSON())
     res.status(200)
     res.json(message)
 

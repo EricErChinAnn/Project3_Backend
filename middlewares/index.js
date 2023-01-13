@@ -19,7 +19,6 @@ const checkIfAuthenticatedEmployee = (req, res, next) => {
 const checkIfAuthenticatedJWT = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
-
     if (authHeader) {
 
         let token = null
@@ -30,11 +29,11 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
             
         } else { token = authHeader }
 
-        // console.log(token)
 
         jwt.verify(token, process.env.TOKEN_SECRET, (err, customer) => {
-
+            console.log(err)
             if (err) {
+                // console.log("error thrown")
                 return res.status(403).json({"error":err});
             }
 
