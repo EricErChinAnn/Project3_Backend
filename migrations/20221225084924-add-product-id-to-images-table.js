@@ -23,6 +23,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
+  db.removeForeignKey("images", 'image_product_fk');
   return db.removeColumn('images', 'product_id');
 };
 

@@ -18,7 +18,6 @@ exports.up = function(db) {
   return db.addColumn('orders', 'status_id',{
       'type':'int',
       'unsigned': true,
-      'notNull':true,
       'foreignKey': {
         'name':'status_order_fk',
         'table':'statuses',

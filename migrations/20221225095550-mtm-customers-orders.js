@@ -39,7 +39,6 @@ exports.up = function (db) {
       },
       order_id: {
           type: 'int',
-          notNull: true,
           unsigned: true,
           foreignKey: {
               name: 'customers_orders_order_fk',
