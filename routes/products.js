@@ -239,7 +239,7 @@ router.get('/update/:productId', checkIfAuthenticatedEmployee, async (req, res) 
 })
 
 router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res) => {
-
+try {
     const productEdit = await Product.where({
         'id': req.params.productId
     }).fetch({
@@ -334,6 +334,10 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
 
         }
     })
+} catch (error) {
+    console.log(error)
+}
+    
 })
 
 
