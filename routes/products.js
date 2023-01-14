@@ -140,42 +140,49 @@ router.get('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
 router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
-    const productForm = await FullProductForm();
+    try {
+        
+        const productForm = await FullProductForm();
 
-    productForm.handle(req, {
-        'success': async (form) => {
+        productForm.handle(req, {
+            'success': async (form) => {
+    
+                const product = await addNewProduct(form.data)
+    
+                // console.log(product)
+    
+    
+                req.flash("success_messages", `New Product <${form.data.name}> has been created`)
+    
+                res.redirect('/products');
+    
+            },
+            "empty": async (form) => {
+    
+                res.render("products/create.hbs", {
+                    'form': form.toHTML(bootstrapField),
+                    cloudinaryName: process.env.CLOUDINARY_NAME,
+                    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                    cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+                })
+    
+            },
+            "error": async (form) => {
+    
+                res.render("products/create.hbs", {
+                    'form': form.toHTML(bootstrapField),
+                    cloudinaryName: process.env.CLOUDINARY_NAME,
+                    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                    cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+                })
+    
+            }
+        })
 
-            const product = await addNewProduct(form.data)
+    } catch (error) {
+        console.log(error)
+    }
 
-            // console.log(product)
-
-
-            req.flash("success_messages", `New Product <${form.data.name}> has been created`)
-
-            res.redirect('/products');
-
-        },
-        "empty": async (form) => {
-
-            res.render("products/create.hbs", {
-                'form': form.toHTML(bootstrapField),
-                cloudinaryName: process.env.CLOUDINARY_NAME,
-                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
-            })
-
-        },
-        "error": async (form) => {
-
-            res.render("products/create.hbs", {
-                'form': form.toHTML(bootstrapField),
-                cloudinaryName: process.env.CLOUDINARY_NAME,
-                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
-            })
-
-        }
-    })
 })
 
 
