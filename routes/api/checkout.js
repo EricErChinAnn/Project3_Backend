@@ -152,7 +152,6 @@ router.get("/cancelled", function (req, res) {
 
 
 
-
 //FrontEnd
 router.get('/frontend', checkIfAuthenticatedJWT, async (req, res) => {
 
@@ -272,6 +271,8 @@ router.get('/frontend', checkIfAuthenticatedJWT, async (req, res) => {
 
     console.log("Before stripe")
     console.log(payment)
+    console.log(process.env.STRIPE_SECRET_KEY)
+
     // step 3: create the session
     let stripeSession = await Stripe.checkout.sessions.create(payment)
 
