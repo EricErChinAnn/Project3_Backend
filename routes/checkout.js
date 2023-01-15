@@ -63,10 +63,8 @@ router.get('/', async (req, res) => {
         payment_intent_data: {
             capture_method: "automatic"
         },
-        success_url: "https://www.google.com/",
-        // process.env.STRIPE_SUCCESS_URL,
-        cancel_url: "https://www.yahoo.com/",
-        // process.env.STRIPE_ERROR_URL,
+        success_url: process.env.STRIPE_SUCCESS_URL,
+        cancel_url: process.env.STRIPE_ERROR_URL,
         shipping_address_collection: {
             allowed_countries: ["SG"],
         },
