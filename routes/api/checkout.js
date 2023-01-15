@@ -271,6 +271,7 @@ router.get('/frontend', checkIfAuthenticatedJWT, async (req, res) => {
 
 
     console.log("Before stripe")
+    console.log(payment)
     // step 3: create the session
     let stripeSession = await Stripe.checkout.sessions.create(payment)
 
