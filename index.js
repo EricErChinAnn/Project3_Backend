@@ -149,7 +149,7 @@ async function main(){
     app.use('/api/products', express.json(), api.products);
     app.use('/api/customers', express.json(), api.customers);
     app.use('/api/cart', express.json(), api.cart);
-    app.use('/api/checkout', api.checkout);
+    app.use('/api/checkout', express.json(), api.checkout);
     app.use('/api/process_payment', api.checkoutRaw);
     app.use('/api/orders', express.json(), api.orders);
 }
