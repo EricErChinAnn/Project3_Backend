@@ -440,8 +440,7 @@ const searchOrderForm = ( statuses )=>{
             errorAfterField: true,
             cssClasses: {
                 label: ['form-label']
-            },
-            'validators': [validators.integer()]
+            }
         }),
         'status_id': fields.string({
             label: "Status",
