@@ -25,9 +25,9 @@ router.get('/', async (req, res) => {
         'empty': async (form) => {
 
             let productsResult = await products.fetch({
-                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
+                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics", "images"]
             })
-            
+
             res.render('products/index', {
                 'products': productsResult.toJSON(),
                 'form': form.toHTML(bootstrapField),
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
         'error': async (form) => {
 
             let productsResult = await products.fetch({
-                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
+                withRelated: ['difficulty', "origin", "categories", "designers", "mechanics", "images"]
             })
 
             res.render('products/index', {
@@ -74,7 +74,7 @@ router.get('/', async (req, res) => {
                 products.where('player_max', '<=', form.data.player_max);
             }
 
-            if (form.data.avg_duration){
+            if (form.data.avg_duration) {
                 products.where('avg_duration', '<=', form.data.avg_duration);
             }
 
@@ -88,17 +88,17 @@ router.get('/', async (req, res) => {
 
             if (form.data.categories) {
                 products.query('join', 'categories_products', 'products.id', 'product_id')
-                .where('category_id', 'in', form.data.categories.split(','))
+                    .where('category_id', 'in', form.data.categories.split(','))
             }
 
             if (form.data.designers) {
                 products.query('join', 'designers_products', 'products.id', 'product_id')
-                .where('designer_id', 'in', form.data.designers.split(','))
+                    .where('designer_id', 'in', form.data.designers.split(','))
             }
 
             if (form.data.mechanics) {
                 products.query('join', 'mechanics_products', 'products.id', 'product_id')
-                .where('mechanic_id', 'in', form.data.mechanics.split(','))
+                    .where('mechanic_id', 'in', form.data.mechanics.split(','))
             }
 
 
@@ -106,7 +106,7 @@ router.get('/', async (req, res) => {
                 withRelated: ['difficulty', "origin", "categories", "designers", "mechanics"]
             })
 
-        
+
             res.render('products/index', {
                 'products': productsResults.toJSON(),
                 'form': form.toHTML(bootstrapField),
@@ -141,41 +141,41 @@ router.get('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 router.post('/create', checkIfAuthenticatedEmployee, async (req, res) => {
 
     try {
-        
+
         const productForm = await FullProductForm();
 
         productForm.handle(req, {
             'success': async (form) => {
-    
+
                 const product = await addNewProduct(form.data)
-    
+
                 // console.log(product)
-    
-    
+
+
                 req.flash("success_messages", `New Product <${form.data.name}> has been created`)
-    
+
                 res.redirect('/products');
-    
+
             },
             "empty": async (form) => {
-    
+
                 res.render("products/create.hbs", {
                     'form': form.toHTML(bootstrapField),
                     cloudinaryName: process.env.CLOUDINARY_NAME,
                     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
                     cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
                 })
-    
+
             },
             "error": async (form) => {
-    
+
                 res.render("products/create.hbs", {
                     'form': form.toHTML(bootstrapField),
                     cloudinaryName: process.env.CLOUDINARY_NAME,
                     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
                     cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
                 })
-    
+
             }
         })
 
@@ -199,7 +199,7 @@ router.get('/update/:productId', checkIfAuthenticatedEmployee, async (req, res) 
         'id': req.params.productId
     }).fetch({
         require: true,
-        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
+        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics", "images"]
     });
 
     const productForm = await FullProductForm();
@@ -239,105 +239,111 @@ router.get('/update/:productId', checkIfAuthenticatedEmployee, async (req, res) 
 })
 
 router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res) => {
-try {
-    const productEdit = await Product.where({
-        'id': req.params.productId
-    }).fetch({
-        require: true,
-        withRelated: ['difficulty', "origin", "categories", "designers", "mechanics","images"]
-    });
+    try {
+        const productEdit = await Product.where({
+            'id': req.params.productId
+        }).fetch({
+            require: true,
+            withRelated: ['difficulty', "origin", "categories", "designers", "mechanics", "images"]
+        });
 
-    const productForm = await FullProductForm();
+        const productForm = await FullProductForm();
 
-    productForm.handle(req, {
-        'success': async (form) => {
-            let { categories, designers, mechanics, ...formData } = form.data;
-            await productEdit.set(formData);
+        productForm.handle(req, {
+            'success': async (form) => {
+                let { categories, designers, mechanics, ...formData } = form.data;
+                await productEdit.set(formData);
 
-            let newCategoriesId = categories.split(",");
-            let oldCategoriesId = await productEdit.related("categories").pluck("id");
+                let newCategoriesId = categories.split(",");
+                let oldCategoriesId = await productEdit.related("categories").pluck("id");
 
-            // await productEdit.category().detach(oldCategoriesId),
-            // await productEdit.category().attach(newCategoriesId)
-            await replaceMTM(productEdit.categories(), oldCategoriesId, newCategoriesId)
+                // await productEdit.category().detach(oldCategoriesId),
+                // await productEdit.category().attach(newCategoriesId)
+                await replaceMTM(productEdit.categories(), oldCategoriesId, newCategoriesId)
 
-            let newDesignerId = designers.split(",");
-            let oldDesignerId = await productEdit.related("designers").pluck("id");
-            await replaceMTM(productEdit.designers(), oldDesignerId, newDesignerId);
+                let newDesignerId = designers.split(",");
+                let oldDesignerId = await productEdit.related("designers").pluck("id");
+                await replaceMTM(productEdit.designers(), oldDesignerId, newDesignerId);
 
-            let newMechanicId = mechanics.split(",");
-            let oldMechanicId = await productEdit.related("mechanics").pluck("id");
-            await replaceMTM(productEdit.mechanics(), oldMechanicId, newMechanicId);
-
-
-
-            const imagesCurrent = await Image.where({
-                'product_id': req.params.productId
-            })
-            // .fetchAll({
-            //     require: true
-            // })
-            .destroy();
-    
-            // if(imagesCurrent.toJSON()){
-            //     // await imagesCurrent.destroy();
-            //     for (let i = 0; i < imagesCurrent.toJSON().length; i++){
-            //         await imagesCurrent.destroy();
-            //     }
-            // }
+                let newMechanicId = mechanics.split(",");
+                let oldMechanicId = await productEdit.related("mechanics").pluck("id");
+                await replaceMTM(productEdit.mechanics(), oldMechanicId, newMechanicId);
 
 
 
-            let imageArray = form.data.image_url.split(" ")
-            let imageThumbArray = form.data.image_url_thumb.split(" ")
+                // const imagesCurrent = await Image.where({
+                //     'product_id': req.params.productId
+                // })
+                //     // .fetchAll({
+                //     //     require: true
+                //     // })
+                //     .destroy();
 
-            for (let i = 0; i < imageArray.length; i++){
-                if(imageArray[i]){
-                    const image = new Image();
+                // if(imagesCurrent.toJSON()){
+                //     // await imagesCurrent.destroy();
+                //     for (let i = 0; i < imagesCurrent.toJSON().length; i++){
+                //         await imagesCurrent.destroy();
+                //     }
+                // }
 
-                    image.set('product_id', req.params.productId);
-                    image.set('image_url', imageArray[i]);
-                    image.set('image_url_thumb', imageThumbArray[i]);
-    
-                    await image.save();
+
+
+                let imageArray = form.data.image_url.split(" ")
+                let imageThumbArray = form.data.image_url_thumb.split(" ")
+
+                if (imageArray.length >= 1) {
+
+                    const imagesCurrent = await Image.where({
+                        'product_id': req.params.productId
+                    }).destroy();
+
+                    for (let i = 0; i < imageArray.length; i++) {
+                        if (imageArray[i]) {
+                            const image = new Image();
+
+                            image.set('product_id', req.params.productId);
+                            image.set('image_url', imageArray[i]);
+                            image.set('image_url_thumb', imageThumbArray[i]);
+
+                            await image.save();
+                        }
+                    }
                 }
+
+                productEdit.save();
+
+
+                req.flash("success_messages", `<${formData.name}> has been updated`)
+                res.redirect('/products');
+
+            },
+            "error": async (form) => {
+
+                res.render('products/update', {
+                    'form': form.toHTML(bootstrapField),
+                    'product': productEdit.toJSON(),
+                    cloudinaryName: process.env.CLOUDINARY_NAME,
+                    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                    cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+                })
+
+            },
+            "empty": async (form) => {
+
+                res.render('products/update', {
+                    'form': form.toHTML(bootstrapField),
+                    'product': productEdit.toJSON(),
+                    cloudinaryName: process.env.CLOUDINARY_NAME,
+                    cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+                    cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
+                })
+
             }
+        })
+    } catch (error) {
+        console.log(error)
+    }
 
-
-            productEdit.save();
-
-
-            req.flash("success_messages", `<${formData.name}> has been updated`)
-            res.redirect('/products');
-
-        },
-        "error": async (form) => {
-
-            res.render('products/update', {
-                'form': form.toHTML(bootstrapField),
-                'product': productEdit.toJSON(),
-                cloudinaryName: process.env.CLOUDINARY_NAME,
-                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
-            })
-
-        },
-        "empty": async (form) => {
-
-            res.render('products/update', {
-                'form': form.toHTML(bootstrapField),
-                'product': productEdit.toJSON(),
-                cloudinaryName: process.env.CLOUDINARY_NAME,
-                cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-                cloudinaryPreset: process.env.CLOUDINARY_UPLOAD_PRESET
-            })
-
-        }
-    })
-} catch (error) {
-    console.log(error)
-}
-    
 })
 
 
