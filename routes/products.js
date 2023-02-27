@@ -291,7 +291,7 @@ router.post("/update/:productId", checkIfAuthenticatedEmployee, async (req, res)
                 let imageArray = form.data.image_url.split(" ")
                 let imageThumbArray = form.data.image_url_thumb.split(" ")
 
-                if (imageArray.length >= 1) {
+                if (form.data.image_url && imageArray.length >= 1) {
 
                     const imagesCurrent = await Image.where({
                         'product_id': req.params.productId
