@@ -435,7 +435,7 @@ const searchOrderForm = ( statuses )=>{
             validators: [validators.integer()]
         }),
         'customers_email': fields.string({
-            label:"Customer Id",
+            label:"Customer Email",
             required: false,
             errorAfterField: true,
             cssClasses: {

@@ -44,7 +44,6 @@ router.get('/', checkIfAuthenticatedEmployee, async (req, res) => {
             if (form.data.customers_email) {
                 allOrdersSearch.query('join', 'customers_orders', 'orders.id', 'order_id')
                     .where('customer_id', 'in', `%${form.data.customers_email}%`)
-                    // Name wrong
             }
 
             if (form.data.status_id) {
