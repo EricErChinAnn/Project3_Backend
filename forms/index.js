@@ -434,14 +434,14 @@ const searchOrderForm = ( statuses )=>{
             },
             validators: [validators.integer()]
         }),
-        'customers_email': fields.string({
-            label:"Customer Email",
-            required: false,
-            errorAfterField: true,
-            cssClasses: {
-                label: ['form-label']
-            }
-        }),
+        // 'customers_email': fields.string({
+        //     label:"Customer Email",
+        //     required: false,
+        //     errorAfterField: true,
+        //     cssClasses: {
+        //         label: ['form-label']
+        //     }
+        // }),
         'status_id': fields.string({
             label: "Status",
             required: false,
